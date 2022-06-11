@@ -1,0 +1,91 @@
+
+from __future__ import annotations
+import pathlib
+import setuptools
+
+import example1
+import example2.bad
+from example3.bad import bad
+from example4.bad import bad as bad
+from . import bad
+from .bad import bad
+from .bad import bad as bad
+from .bad.bad import bad
+from .bad.bad import bad as bad
+from ..bad import bad
+from ..bad import bad as bad
+
+if True:
+    import example5
+    import example6.bad
+    from example7.bad import bad
+    from example8.bad import bad as bad
+    from . import bad
+    from .bad import bad
+    from .bad import bad as bad
+    from .bad.bad import bad
+    from .bad.bad import bad as bad
+    from ..bad import bad
+    from ..bad import bad as bad
+
+if False:
+    import example9
+    import example10.bad
+    from example11.bad import bad
+    from example12.bad import bad as bad
+    from . import bad
+    from .bad import bad
+    from .bad import bad as bad
+    from .bad.bad import bad
+    from .bad.bad import bad as bad
+    from ..bad import bad
+    from ..bad import bad as bad
+
+def foo():
+    import example13
+    import example14.bad
+    from example15.bad import bad
+    from example16.bad import bad as bad
+    from . import bad
+    from .bad import bad
+    from .bad import bad as bad
+    from .bad.bad import bad
+    from .bad.bad import bad as bad
+    from ..bad import bad
+    from ..bad import bad as bad
+
+def foo():
+    if True:
+        import example17
+        import example18.bad
+        from example19.bad import bad
+        from example20.bad import bad as bad
+        from . import bad
+        from .bad import bad
+        from .bad import bad as bad
+        from .bad.bad import bad
+        from .bad.bad import bad as bad
+        from ..bad import bad
+        from ..bad import bad as bad
+    if False:
+        import example21
+        import example22.bad
+        from example23.bad import bad
+        from example24.bad import bad as bad
+        from . import bad
+        from .bad import bad
+        from .bad import bad as bad
+        from .bad.bad import bad
+        from .bad.bad import bad as bad
+        from ..bad import bad
+        from ..bad import bad as bad
+
+import example1
+import example2
+import example3
+import example4
+import example5
+import example6
+import example7
+import example8
+import example9

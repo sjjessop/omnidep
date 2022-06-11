@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "omnidep"
+version = "0.1.0"
+description = ""
+authors = ["Steve Jessop <noreply@github.com>"]
+packages = [
+    { include = "omnidep" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7.0"
+
+importlib-metadata = "*"
+isort = { version = "*", python = "<3.10" }
+tomli = "*"
+typer = "*"
+
+[tool.poetry.dev-dependencies]
+coverage = { version = "*", extras = ["toml"] }
+flake8 = "*"
+isort = "*"
+mypy = "*"
+pyOpenSSL = "*"  # Used as a test case
+pytest = "*"
+pytest-cov = "*"
+
+[tool.poetry.scripts]
+omnidep = 'omnidep.main:script_entry_point'
+
+
+[tool.omnidep]
+local-test-packages = ["omnidep/tst/"]
+
+
+[tool.isort]
+force_sort_within_sections = true
+lines_after_imports=1
+multi_line_output = "VERTICAL_GRID_GROUPED"
+include_trailing_comma = true
+src_paths = ["omnidep"]
+known_first_party = ["omnidep"]
+
+
+[tool.mypy]
+pretty = true
+strict = true
+allow_untyped_calls = true
+
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
