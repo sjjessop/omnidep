@@ -11,6 +11,10 @@ def test_find_source_files() -> None:
     assert Path(__file__) in results
     assert all(path.suffix == '.py' for path in results)
 
+def test_find_source_files_single() -> None:
+    this_file = Path(__file__)
+    assert list(imports.find_source_files(this_file)) == [Path(this_file)]
+
 def test_is_external() -> None:
     assert not imports.is_external('pathlib')
     assert not imports.is_external('__future__')

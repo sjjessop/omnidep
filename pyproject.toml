@@ -29,7 +29,7 @@ omnidep = 'omnidep.main:script_entry_point'
 
 
 [tool.omnidep]
-local-test-packages = ["omnidep/tst/"]
+local-test-paths = ["omnidep/tst/"]
 
 
 [tool.isort]

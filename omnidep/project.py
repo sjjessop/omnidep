@@ -15,7 +15,7 @@ import tomli
 from .command import Config
 from .errors import Violation as V
 from .errors import Warn, Warned
-from .imports import get_external_modules
+from .imports import find_source_files, get_external_modules
 from .packages import canon, find_packages, get_preferred_name
 
 logger = logging.getLogger()
@@ -55,11 +55,15 @@ class Project:
     local_packages: FrozenSet[str] = frozenset()
     extra_paths: Tuple[Path, ...] = ()
 
-    def check_dependencies(self, paths: Iterable[Path]) -> Iterable[Warn]:
+    def check_dependencies(
+        self, paths: Iterable[Path],
+        *, exclude: Iterable[Path] = (),
+    ) -> Iterable[Warn]:
         yield from self.check_modules(
             itertools.chain(paths, self.extra_paths),
             self.dependencies,
             self.local_packages,
+            exclude=itertools.chain(exclude, self.config.local_test_paths),
         )
 
     def check_dev_dependencies(self, paths: Optional[Iterable[Path]]) -> Iterable[Warn]:
@@ -77,11 +81,17 @@ class Project:
 
     def check_modules(
         self, paths: Iterable[Path], packages: Collection[str], local_packages: FrozenSet[str],
-        *, label: str = 'dependencies', check_unused: bool = True,
+        *, label: str = 'dependencies', check_unused: bool = True, exclude: Iterable[Path] = (),
     ) -> Iterable[Warn]:
         paths = list(paths)
         logger.info(f'searching {", ".join(map(str, paths))}')
-        modules = [module for module in get_external_modules(paths) if not self.ignore_import(module)]
+        def get_files(paths: Iterable[Path]) -> Set[Path]:
+            return set(itertools.chain.from_iterable(map(find_source_files, paths)))
+        included_paths = get_files(paths) - get_files(exclude)
+        modules = [
+            module for module in get_external_modules(included_paths)
+            if not self.ignore_import(module)
+        ]
         logger.info(f'{label} imported: {modules}')
         used: Set[str] = {'python'}
         for module in modules:

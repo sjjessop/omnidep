@@ -40,7 +40,7 @@ def main(
 
     warnings = (
         read_poetry(project or get_project_file(paths))
-        .collect(lambda x: x.check_dependencies(paths))
+        .collect(lambda x: x.check_dependencies(paths, exclude=tests or ()))
         .collect(lambda x: x.check_dev_dependencies(tests))
     ).warnings
 

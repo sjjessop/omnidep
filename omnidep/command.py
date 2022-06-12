@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field, fields
+from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 from .errors import ConfigError
@@ -12,6 +13,7 @@ class Config:
     child_packages: Dict[str, List[str]] = field(default_factory=dict)
     ignore_dependencies: List[str] = field(default_factory=list)
     local_test_packages: List[str] = field(default_factory=list)
+    local_test_paths: List[Path] = field(default_factory=list)
     ignore_dependencies_order: bool = False
     ignore_dev_dependencies_order: bool = False
 
@@ -38,16 +40,24 @@ class Config:
                     isinstance(val, list) and
                     all(isinstance(x, str) for x in val)
                 ),
+                'List[Path]': lambda val: (
+                    isinstance(val, list) and
+                    all(isinstance(x, str) for x in val)
+                ),
                 'Dict[str, List[str]]': lambda val: (
                     isinstance(val, dict) and
                     all(isinstance(key, str) for key in val) and
                     all(map(check['List[str]'], val.values()))
                 ),
             }
+            convert: Dict[str, Callable[[Any], Any]] = {
+                'List[Path]': lambda val: list(map(Path, val))
+            }
             # It already is a str due to "import annotations". But mypy doesn't
             # seem to know that, so coerce it.
             expected_type = str(allowed[key].type)
             if not check[expected_type](value):
                 raise ConfigError(f"Config option {orig_key!r}: expected {expected_type}, got {value!r}")
-            args[key] = value
+            converter = convert.get(expected_type, lambda x: x)
+            args[key] = converter(value)
         return Config(**args)

@@ -29,6 +29,8 @@ def iter_import_names(tree: ast.AST) -> Iterable[str]:
             raise NotImplementedError(f'unhandled {type(node)} {node!r}')
 
 def find_source_files(path: Path) -> Iterable[Path]:
+    if path.is_file() and path.suffix == '.py':
+        return [path]
     return path.glob('**/*.py')
 
 def iter_modules(path: Path) -> Iterable[str]:
