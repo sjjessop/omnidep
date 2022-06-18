@@ -1,11 +1,64 @@
 
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass, field, fields
+import logging
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Type, TypeVar
 
 from .errors import ConfigError
+from .main import __doc__ as main_docstring
+
+# TODO - Python 3.11 will have public logging.getLevelNamesMapping
+# https://github.com/python/cpython/issues/88024
+# There is also a solution for click: https://pypi.org/project/click-loglevel/
+log_levels = tuple(p[1] for p in sorted(logging._levelToName.items()))
+
+# click and typer are good, but other lint tools like black and mypy depend on
+# click (as does typer). Projects that want to use omnidep might also be using
+# any past or future version of black/mypy/etc. I don't want to risk
+# incompatibilities due to breaking changes in a common dependency, or do much
+# work on an upgrade treadmill ensuring I always support every version of
+# click. So, argparse it is.
+parser = argparse.ArgumentParser(description=main_docstring)
+
+CLT = TypeVar('CLT', bound='BasicCommandLine')
+
+@dataclass
+class BasicCommandLine:
+    _log_level: Optional[str] = None
+    verbose: bool = False
+
+    @property
+    def log_level(self) -> Optional[str]:
+        if self.verbose:
+            return 'INFO'
+        return self._log_level
+
+    @classmethod
+    def parse(cls: Type[CLT], args: Optional[List[str]] = None) -> CLT:
+        return parser.parse_args(args=args, namespace=cls())
+
+    @classmethod
+    def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
+        parser.add_argument('--log-level', choices=log_levels, dest='_log_level')
+        parser.add_argument('--verbose', '-v', action='store_true', default=False)
+
+@dataclass
+class CommandLine(BasicCommandLine):
+    paths: List[Path] = field(default_factory=list)
+    project: Optional[Path] = None
+    tests: Optional[List[Path]] = None
+
+    @classmethod
+    def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
+        parser.add_argument('paths', metavar='PATH', nargs='+', type=Path)
+        parser.add_argument('--project', metavar='PATH', type=Path)
+        parser.add_argument('--tests', metavar='PATH', action='append', type=Path)
+        super().add_arguments(parser)
+
+CommandLine.add_arguments(parser)
 
 @dataclass(frozen=True)
 class Config:

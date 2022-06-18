@@ -1,11 +1,14 @@
+#!/usr/bin/env python3
+#
+"""
+Check project dependencies against imports in code.
+"""
 
-import enum
 import logging
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Iterable, Optional
 
-import typer
-
+from .command import CommandLine
 from .errors import ConfigError
 from .project import read_poetry
 
@@ -20,28 +23,11 @@ def get_project_file(paths: Iterable[Path]) -> Optional[Path]:
         return tomls.pop()
     return None
 
-# TODO - Python 3.11 will have public logging.getLevelNamesMapping
-# https://bugs.python.org/issue43858
-# There is also a solution for click: https://pypi.org/project/click-loglevel/
-log_levels = tuple(p[1] for p in sorted(logging._levelToName.items()))
-LogLevel = enum.Enum('LogLevel', {x: x for x in log_levels})  # type: ignore
-
-def main(
-    paths: List[Path],
-    project: Optional[Path] = typer.Option(None),
-    tests: Optional[List[Path]] = typer.Option(None),
-    log_level: Optional[LogLevel] = typer.Option('WARNING'),
-    verbose: bool = typer.Option(False, "--verbose", "-v"),
-) -> None:
-    if verbose:
-        log_level = LogLevel['INFO']
-    if log_level is not None:
-        logging.basicConfig(level=log_level.value)
-
+def main(args: CommandLine) -> None:
     warnings = (
-        read_poetry(project or get_project_file(paths))
-        .collect(lambda x: x.check_dependencies(paths, exclude=tests or ()))
-        .collect(lambda x: x.check_dev_dependencies(tests))
+        read_poetry(args.project or get_project_file(args.paths))
+        .collect(lambda x: x.check_dependencies(args.paths, exclude=args.tests or ()))
+        .collect(lambda x: x.check_dev_dependencies(args.tests))
     ).warnings
 
     if warnings:
@@ -61,8 +47,11 @@ def main(
         raise SystemExit(1)
 
 def script_entry_point() -> None:
+    args = CommandLine.parse()
+    if args.log_level is not None:
+        logging.basicConfig(level=args.log_level)
     try:
-        typer.run(main)
+        main(args)
     except ConfigError as e:
         raise SystemExit(str(e))
     finally:
