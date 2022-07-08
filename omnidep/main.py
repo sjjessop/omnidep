@@ -45,6 +45,8 @@ def main(args: CommandLine) -> None:
             * To ignore an imported module name, add it to "ignore-imports".
         """.replace('    ', ' '))
         raise SystemExit(1)
+    else:
+        logger.info("No issues found")
 
 def script_entry_point() -> None:
     args = CommandLine.parse()
