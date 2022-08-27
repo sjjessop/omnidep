@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 #
-"""
-Check project dependencies against imports in code.
-"""
 
 import logging
 from pathlib import Path
