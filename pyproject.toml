@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omnidep"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Steve Jessop <noreply@github.com>"]
 packages = [

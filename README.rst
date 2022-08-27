@@ -198,3 +198,13 @@ To fix:
 * If you know what you're doing, and users of your project will know how to
   supply the code that you're importing, then ignore the import with
   ``ignore-imports = ["X"]`` in your ``[tool.omnidep]`` config.
+
+Changelog
+=========
+
+0.2.0
+-----
+
+* Minor documentation improvements.
+* Lower bounds for dependencies importlib-metadata, isort, and tomli.
+* CI test of the lower-bound versions.
