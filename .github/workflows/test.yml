@@ -13,6 +13,9 @@ jobs:
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v2
 
@@ -21,11 +24,16 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Install code and dev dependencies
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.15
+
+      - name: Install project
         run: |
-          pip install poetry==1.1.13
           poetry install
           poetry run pip freeze
+          poetry run pip check
 
       - name: Lint
         run: |
@@ -35,3 +43,14 @@ jobs:
 
       - name: Test
         run: poetry run pytest --cov=omnidep --cov-branch --cov-report=term --durations=3
+
+      - name: Install minimal dependencies
+        run: |
+          poetry run pip install tomli==1.1.0
+          poetry run pip install importlib-metadata==1.0.0
+          poetry run pip install isort==5.0.1
+          poetry run pip freeze
+          poetry run pip check
+
+      - name: Test minimal dependencies
+        run: poetry run pytest --durations=3

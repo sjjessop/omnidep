@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omnidep"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Steve Jessop <noreply@github.com>"]
 packages = [
@@ -10,9 +10,9 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7.0"
 
-importlib-metadata = "*"
-isort = { version = "*", python = "<3.10" }
-tomli = "*"
+importlib-metadata = ">=1.0.0"
+isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
+tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
 
 [tool.poetry.dev-dependencies]
 coverage = { version = "*", extras = ["toml"] }

@@ -69,7 +69,9 @@ def get_preferred_name(package: str) -> Optional[str]:
     """
     Return the name the project calls itself.
     """
-    with contextlib.suppress(ImportError):
+    # importlib_metadat.PackageNotFoundError inherits from FileNotFoundError
+    # in old versions (<3) and ImportError more recently.
+    with contextlib.suppress(FileNotFoundError, ImportError):
         name: Optional[str] = metadata.distribution(package).metadata.get('Name')
         return name
     return None

@@ -94,7 +94,7 @@ ODEP003
 
 If projects P, Q, and R all provide code in the Python package X, then omnidep
 doesn't know which one you need in order to satisfy a given import. If you
-declare dependencies on all of them (that is, all the ones you urrently have
+declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on some but not others,
 then you get this message.
 
@@ -118,7 +118,7 @@ ODEP004
 
 If projects P, Q, and R all provide code in the Python package X, then omnidep
 doesn't know which one you need in order to satisfy a given import. If you
-declare dependencies on all of them (that is, all the ones you urrently have
+declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on none of them,
 then you get this message.
 
@@ -174,14 +174,14 @@ ODEP007
 
 ``dependency 'X' is not the preferred name: consider 'Y'``
 
-There are two formats that omnidep expects you to use to name dependencies in
-your project file: the "Normalized Name" as defined in
+omnidep expects you to use either of two formats to name dependencies in your
+project file: the "Normalized Name" as defined in
 `PEP 503 <https://peps.python.org/pep-0503/>`_ or the name the dependency uses
-for itself in its metadata. Any other name will work that normalizes to the
-same value, but inconsistent naming tends to lead to confusion, or to failing
-to find mentions when you search for them.
+for itself in its metadata. Any name that normalizes to the same value will
+work, but inconsistent naming tends to lead to confusion, or to failing to find
+mentions when you search for them.
 
-To fix: Use the name omnidep suggests.
+To fix: Use the name omnidep suggests, or the normalized name.
 
 ODEP008
 ^^^^^^^
@@ -198,3 +198,13 @@ To fix:
 * If you know what you're doing, and users of your project will know how to
   supply the code that you're importing, then ignore the import with
   ``ignore-imports = ["X"]`` in your ``[tool.omnidep]`` config.
+
+Changelog
+=========
+
+0.2.0
+-----
+
+* Minor documentation improvements.
+* Lower bounds for dependencies importlib-metadata, isort, and tomli.
+* CI test of the lower-bound versions.

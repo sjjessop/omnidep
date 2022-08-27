@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Type, TypeVar
 
 from .errors import ConfigError
-from .main import __doc__ as main_docstring
 
 # TODO - Python 3.11 will have public logging.getLevelNamesMapping
 # https://github.com/python/cpython/issues/88024
@@ -21,7 +20,7 @@ log_levels = tuple(p[1] for p in sorted(logging._levelToName.items()))
 # incompatibilities due to breaking changes in a common dependency, or do much
 # work on an upgrade treadmill ensuring I always support every version of
 # click. So, argparse it is.
-parser = argparse.ArgumentParser(description=main_docstring)
+parser = argparse.ArgumentParser(description="Check project dependencies against imports in code.")
 
 CLT = TypeVar('CLT', bound='BasicCommandLine')
 
