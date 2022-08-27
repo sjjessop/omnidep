@@ -33,6 +33,7 @@ jobs:
         run: |
           poetry install
           poetry run pip freeze
+          poetry run pip check
 
       - name: Lint
         run: |
@@ -47,6 +48,7 @@ jobs:
         run: |
           poetry run pip install "tomli==1.1.0"
           poetry run pip freeze
+          poetry run pip check
 
       - name: Test minimal dependencies
         run: poetry run pytest --durations=3
