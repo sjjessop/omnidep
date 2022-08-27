@@ -35,3 +35,11 @@ jobs:
 
       - name: Test
         run: poetry run pytest --cov=omnidep --cov-branch --cov-report=term --durations=3
+
+      - name: Install minimal dependencies
+        run: |
+          poetry run pip install "tomli==1.1.0"
+          poetry run pip freeze
+
+      - name: Test minimal dependencies
+        run: poetry run pytest --durations=3

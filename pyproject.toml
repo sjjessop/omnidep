@@ -12,7 +12,7 @@ python = "^3.7.0"
 
 importlib-metadata = "*"
 isort = { version = "*", python = "<3.10" }
-tomli = "*"
+tomli = ">=1.1.0"  # we need support for binary filehandles
 
 [tool.poetry.dev-dependencies]
 coverage = { version = "*", extras = ["toml"] }
