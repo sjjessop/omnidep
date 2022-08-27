@@ -174,14 +174,14 @@ ODEP007
 
 ``dependency 'X' is not the preferred name: consider 'Y'``
 
-There are two formats that omnidep expects you to use to name dependencies in
-your project file: the "Normalized Name" as defined in
+omnidep expects you to use either of two formats to name dependencies in your
+project file: the "Normalized Name" as defined in
 `PEP 503 <https://peps.python.org/pep-0503/>`_ or the name the dependency uses
-for itself in its metadata. Any other name will work that normalizes to the
-same value, but inconsistent naming tends to lead to confusion, or to failing
-to find mentions when you search for them.
+for itself in its metadata. Any name that normalizes to the same value will
+work, but inconsistent naming tends to lead to confusion, or to failing to find
+mentions when you search for them.
 
-To fix: Use the name omnidep suggests.
+To fix: Use the name omnidep suggests, or the normalized name.
 
 ODEP008
 ^^^^^^^
