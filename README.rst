@@ -94,7 +94,7 @@ ODEP003
 
 If projects P, Q, and R all provide code in the Python package X, then omnidep
 doesn't know which one you need in order to satisfy a given import. If you
-declare dependencies on all of them (that is, all the ones you urrently have
+declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on some but not others,
 then you get this message.
 
@@ -118,7 +118,7 @@ ODEP004
 
 If projects P, Q, and R all provide code in the Python package X, then omnidep
 doesn't know which one you need in order to satisfy a given import. If you
-declare dependencies on all of them (that is, all the ones you urrently have
+declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on none of them,
 then you get this message.
 
