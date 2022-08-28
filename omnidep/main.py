@@ -29,19 +29,7 @@ def main(args: CommandLine) -> None:
 
     if warnings:
         print('\n'.join(w.report for w in warnings))
-    bad = set(filter(None, (x.missing_package_name for x in warnings)))
-    if bad:
-        word = "package" if len(bad) == 1 else "packages"
-        logger.error(f"""
-            {len(bad)} missing {word}: {sorted(bad)}.
-            Indirect dependencies may provide the packages you need, but can't specify what version you rely on.
-            Therefore breaking changes in future versions could be introduced via the intermediate dependency.
-            Solutions:
-            * List the package name as an explicit dependency.
-            * To assume that a dependency on X also provides Y, add X = ["Y"] to "child-packages".
-            * To ignore an imported module name, add it to "ignore-imports".
-        """.replace('    ', ' '))
-        raise SystemExit(1)
+        print("See https://github.com/sjjessop/omnidep#error-codes-explained")
     else:
         logger.info("No issues found")
 
