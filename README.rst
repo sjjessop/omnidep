@@ -202,6 +202,12 @@ To fix:
 Changelog
 =========
 
+0.2.1
+-----
+
+* Refer to online docs insted of long message in terminal.
+* Publish to PyPI.
+
 0.2.0
 -----
 
