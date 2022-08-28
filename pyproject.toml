@@ -1,11 +1,12 @@
 [tool.poetry]
 name = "omnidep"
 version = "0.2.0"
-description = ""
-authors = ["Steve Jessop <noreply@github.com>"]
-packages = [
-    { include = "omnidep" },
-]
+description = "Linter to compare project dependencies against imports in source code"
+readme = "README.rst"
+authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
+license = "MIT"
+homepage = "https://github.com/sjjessop/omnidep"
+packages = [{ include = "omnidep" }]
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
@@ -53,3 +54,7 @@ exclude_lines = [
     "if 0:",
     "if __name__ == .__main__.:",
 ]
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
