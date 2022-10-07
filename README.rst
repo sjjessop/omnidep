@@ -163,7 +163,8 @@ ODEP006
 |
 
 Ignoring ``python``, which is allowed to come first, omnidep expects you to
-list dependencies in alphabetical order within each section (dev and non-dev).
+list dependencies in case-insensitive alphabetical order within each section
+(dev and non-dev).
 
 To fix: Either list your dependencies alphabetically, or set
 ``ignore-dependencies-order = true`` or

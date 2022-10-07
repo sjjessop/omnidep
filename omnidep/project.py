@@ -28,7 +28,7 @@ def check_order(deps: Collection[str], label: str = 'dependencies') -> Iterable[
     if deps[0] == 'python':
         deps = deps[1:]
     for first, second in zip(deps, itertools.islice(deps, 1, None)):
-        if first > second:
+        if first.casefold() > second.casefold():
             yield V.ODEP006(f"{label} are not sorted: {first!r} before {second!r}")
             return
 
