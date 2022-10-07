@@ -47,7 +47,7 @@ jobs:
       - name: Install minimal dependencies
         run: |
           poetry run pip install tomli==1.1.0
-          poetry run pip install importlib-metadata==1.0.0
+          poetry run pip install importlib-metadata==1.1.0
           poetry run pip install isort==5.0.1
           poetry run pip freeze
           poetry run pip check
