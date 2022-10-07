@@ -203,6 +203,12 @@ To fix:
 Changelog
 =========
 
+0.3.0
+-----
+
+* When testing that dependencies are sorted, do it case-insensitive.
+* Deal with some build issues.
+
 0.2.1
 -----
 
