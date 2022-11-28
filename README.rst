@@ -54,6 +54,114 @@ Usage
 
     omnidep pyproject.toml
 
+
+Configuration
+-------------
+
+omnidep uses your project's poetry configuration to work out:
+
+* What source files to search for imports, from ``tool.poetry.packages``.
+* What dependencies your project declares, from ``tool.poetry.dependencies``.
+* What dev-dependencies your project declares, from
+  ``tool.poetry.dev-dependencies``.
+
+If you have test code that you want omnidep to search for imports, then:
+
+* If you keep your test code "inside" your project, then list it in
+  ``local-test-paths`` in the ``[omnidep.config]`` section described below.
+* If you keep your test code "outside" your project, then use the ``--tests``
+  command-line option to locate it, otherwise omnidep ignores it. You also need
+  to configure ``local-test-packages`` if some of your test files import other
+  test files, for example if you have shared helper functions.
+
+omnidep is configured using the ``pyproject.toml`` file, and specifically the
+``[tool.omnidep]`` section. The following config keys are recognised.
+Unrecognised keys are rejected and omnidep will not run (so, if you want to
+use a particular key then you should require at least the minimum version of
+omnidep that recognises it).
+
+ignore-imports
+^^^^^^^^^^^^^^
+
+Example: ``ignore-imports = ["X"]``
+
+Since: 0.2.0
+
+Causes omnidep to ignore all import statements from X, for example
+``import X``, ``from X.Y import Z``. omnidep will behave as if your code does
+not use package X, even if it does. X must be a top-level package. It is not
+currently possible to selectively ignore a sub-package (like X.Y), nor is it
+currently possible to ignore imports from some files but not others.
+
+child-packages
+^^^^^^^^^^^^^^
+
+Example: ``child-packages = {boto3 = ["botocore"]}``
+
+Since: 0.2.0
+
+Causes omnidep to consider a dependency on boto3 to also supply botocore. This
+saves you having to explictly list the child as a dependency of your project.
+You chould only do this when the child is inherant to the parent, not just
+because by chance you pull in a package you need via an indirect dependency.
+The reason is that indirect dependencies can change, and the project that you
+do depend on might not require the same version of the child that your usage
+requires. Only if the projects are closely related can you assume that the
+version you require of one will provide the features you need from the other.
+
+ignore-dependencies
+^^^^^^^^^^^^^^^^^^^
+
+Example: ``ignore-dependencies = ["X"]``
+
+Since: 0.2.0
+
+Causes omnidep to ignore the project X listed in your project's dependencies.
+omnidep will behave as if your project does not depend on X, even if it does.
+
+ignore-dependencies-order
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Example: ``ignore-dependencies-order = true``
+
+Since: 0.2.0
+
+Causes omnidep to skip the check that your dependencies are alphabetically
+ordered.
+
+ignore-dev-dependencies-order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Example: ``ignore-dev-dependencies-order = true``
+
+Since: 0.2.0
+
+Causes omnidep to skip the check that your dev-dependencies are alphabetically
+ordered.
+
+local-test-paths
+^^^^^^^^^^^^^^^^
+
+Example: ``local-test-paths = ["myproject/tests/"]``
+
+Since: 0.2.0
+
+Causes omnidep to treat all code in ``myproject.tests`` as test code, meaning
+that anything it imports can be provided either by your projects dependencies
+or by its dev-dependencies. Imports from code that is not test code must be
+provided by non-dev dependencies.
+
+local-test-packages
+^^^^^^^^^^^^^^^^^^^
+
+Example: ``local-test-packages = ["tests"]``
+
+Since: 0.2.0
+
+Causes omnidep to treat ``tests`` as part of the current project, but only when
+considering imports that appear in test code. Use this when your test code is
+not shipped as part of your project.
+
 Error codes explained
 ---------------------
 
