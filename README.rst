@@ -13,8 +13,12 @@ statements in its source code.
    :alt: Tested with Python versions 3.7 3.8 3.9 3.10 3.11
    :target: https://www.python.org/downloads/
 
-.. image:: https://img.shields.io/badge/badges-3-green.svg
-   :alt: 3 badges
+.. image:: https://img.shields.io/pypi/pyversions/omnidep
+   :alt: PyPI project
+   :target: https://pypi.org/project/omnidep/
+
+.. image:: https://img.shields.io/badge/badges-4-green.svg
+   :alt: 4 badges
    :target: https://shields.io/
 
 Purpose
