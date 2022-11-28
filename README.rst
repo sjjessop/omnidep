@@ -28,6 +28,8 @@ Provides warnings when a project imports packages that it doesn't declare a
 dependency on, plus some related linting of the project dependency data.
 
 Currently only poetry projects are supported (configured in pyproject.toml).
+The projects that your project depends on can be packaged using any tools, but
+your project (that omnidep analyses) currently must use poetry.
 
 Installation
 ------------
@@ -66,12 +68,12 @@ ODEP001
 |
 
 X is the name you imported, which is not necessarily the same as the name of
-the project used to install it (for example the project ``beautifulsoup4``
+the project you have to install (for example the project ``beautifulsoup4``
 installs the package ``bs4``). omnidep does its best to find what project your
 desired package comes from, but if it fails, or if you don't have a suitable
 dependency, then this is the result.
 
-To fix:
+To fix, choose one of the following:
 
 * List the project name in your dependencies. If the package is used from test
   code, then the dependency can be either dev or non-dev. If the package is
@@ -82,14 +84,10 @@ To fix:
   prefer not to explicitly list it as a direct dependency too, so you can list
   X as a child of some other dependency that you do list. You should only do
   this when the indirect dependency is inherent to the direct dependency, for
-  example ``boto3`` provides ``botocore``. Otherwise there's a risk that the
-  indirect dependency will introduce breaking changes, which the direct
-  dependency doesn't care about and so accepts the new version, but which break
-  your particular usage of the indirect dependency. To do this, then
-  you can add ``child-packages = {something = ["X"]}`` to your
-  ``[tool.omnidep]`` config, meaning that the project named "something"
-  provides "X", and so a dependency on "something" is acceptable in place of a
-  dependency on "X".
+  example ``boto3`` provides ``botocore``. Add
+  ``child-packages = {something = ["X"]}`` to your ``[tool.omnidep]`` config,
+  meaning that the project named "something" provides "X", and so a dependency
+  on "something" is acceptable in place of a dependency on "X".
 
 ODEP002
 ^^^^^^^
@@ -100,9 +98,10 @@ Not only is there no dependency found that provides X, but X isn't even
 currently installed. omnidep relies on locally installed metadata to help it
 find what dependencies correspond to what imports.
 
-To fix:
+To fix, choose one of the following:
 
-* Install your project, bringing in its dependencies.
+* If your project has X as a dependency, but you haven't installed your
+  project then install your project, bringing in its dependencies.
 * Add a dependency that provides X.
 * Ignore the import by listing it in your in your ``[tool.omnidep]`` config,
   like ``ignore-imports = ["X"]``.
@@ -118,7 +117,7 @@ declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on some but not others,
 then you get this message.
 
-To fix:
+To fix, choose one of the following:
 
 * If you don't need the ones you don't declare dependencies on, and they are
   installed accidentally, then uninstall them.
@@ -142,7 +141,7 @@ declare dependencies on all of them (that is, all the ones you currently have
 installed), then omnidep is satisfied. If you depend on none of them,
 then you get this message.
 
-To fix:
+To fix, choose one of the following:
 
 * If appropriate, declare dependencies on all of P, Q, and R. However, this
   might not be appropriate because P and Q might be genuine direct dependencies
@@ -169,7 +168,7 @@ might be completely legitimate, for example:
 Unused dev-dependencies are always ignored, since they tend to include linters
 and suchlike.
 
-To fix:
+To fix, choose one of the following:
 
 * Remove the dependency.
 * List the dependency in your ``[tool.omnidep]`` config like
@@ -186,9 +185,11 @@ Ignoring ``python``, which is allowed to come first, omnidep expects you to
 list dependencies in case-insensitive alphabetical order within each section
 (dev and non-dev).
 
-To fix: Either list your dependencies alphabetically, or set
-``ignore-dependencies-order = true`` or
-``ignore-dev-dependencies-order = true`` in your ``[tool.omnidep]`` config.
+To fix, choose one of the following:
+
+* List your dependencies alphabetically.
+* Set ``ignore-dependencies-order = true`` or
+  ``ignore-dev-dependencies-order = true`` in your ``[tool.omnidep]`` config.
 
 ODEP007
 ^^^^^^^
@@ -202,7 +203,9 @@ for itself in its metadata. Any name that normalizes to the same value will
 work, but inconsistent naming tends to lead to confusion, or to failing to find
 mentions when you search for them.
 
-To fix: Use the name omnidep suggests, or the normalized name.
+To fix:
+
+* Use the name omnidep suggests, or the normalized name.
 
 ODEP008
 ^^^^^^^
@@ -213,7 +216,7 @@ omnidep cannot find any project that provides X, but it is available to import.
 This can happen for example if you have set up the ``PYTHONPATH`` to find the
 code, instead of installing it as a dependency.
 
-To fix:
+To fix, choose one of the following:
 
 * If this is an error, list a suitable dependency.
 * If you know what you're doing, and users of your project will know how to
