@@ -9,7 +9,7 @@ homepage = "https://github.com/sjjessop/omnidep"
 packages = [{ include = "omnidep" }]
 
 [tool.poetry.dependencies]
-python = "^3.7.0"
+python = ">=3.7.0"
 
 importlib-metadata = ">=1.1.0"  # 1.1.0 required by flake8
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
@@ -54,6 +54,11 @@ exclude_lines = [
     "if 0:",
     "if __name__ == .__main__.:",
 ]
+
+
+[tool.pytest.ini_options]
+filterwarnings = ["error"]
+
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
