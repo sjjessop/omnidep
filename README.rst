@@ -29,6 +29,22 @@ dependency on, plus some related linting of the project dependency data.
 
 Currently only poetry projects are supported (configured in pyproject.toml).
 
+Installation
+------------
+
+.. code-block:: bash
+
+    pip install omnidep
+
+Optionally, you can also run the test suite. This would be a good idea if
+you're using a new (or pre-release) version of Python not included in this
+repo's CI testing.
+
+.. code-block:: bash
+
+    pip install pyOpenSSL pytest
+    pytest --pyargs omnidep.tst
+
 Usage
 -----
 
