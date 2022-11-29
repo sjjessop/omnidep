@@ -338,7 +338,7 @@ Changelog
 -----
 
 * Add Python 3.11 to the test matrix, and use separate badges in the README
-  for what is permitted vs. what is tested.
+  for what is tagged on PyPI vs. what is tested.
 * Documentation improvements.
 * Uncap Python dependency. If Python ever reaches version 4, you are free to
   install omnidep on it and see what happens!
