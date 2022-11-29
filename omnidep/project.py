@@ -145,15 +145,29 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
     poetry_data = tools['poetry']
     config = Config.make(tools.get('omnidep'))
 
-    def process(key: str, ignore: bool) -> Warned[FrozenSet[str]]:
+    def process(deps: Dict[str, Any], dev: bool) -> Warned[FrozenSet[str]]:
+        if dev:
+            ignore = config.ignore_dev_dependencies_order
+            key = 'dev-dependencies'
+        else:
+            ignore = config.ignore_dependencies_order
+            key = 'dependencies'
         return (
-            Warned(poetry_data[key])
+            Warned(deps)
             .collect(lambda x: () if ignore else check_order(x, key))
             .flatMap(fix_canonical_names)
         )
 
-    deps = process('dependencies', config.ignore_dependencies_order)
-    dev_deps = process('dev-dependencies', config.ignore_dev_dependencies_order)
+    deps = process(poetry_data['dependencies'], False)
+    # Poetry 1.2.0+ has two different places you can specify dev dependencies
+    old_dev_data = poetry_data.get('dev-dependencies', {})
+    old_dev_deps = process(old_dev_data, True)
+    new_dev_data = poetry_data.get('group', {}).get('dev', {}).get('dependencies', {})
+    new_dev_deps = process(new_dev_data, True)
+    dev_deps: Warned[FrozenSet[str]] = (
+        Warned.gather([old_dev_deps, new_dev_deps])
+        .map(lambda x: frozenset(itertools.chain.from_iterable(x)))
+    )
 
     pkgs = {pack['include'] for pack in poetry_data['packages']}
     project = Project(

@@ -188,9 +188,14 @@ def test_gather() -> None:
         Warned(2).flatMap(double_bad),
         Warned(3).flatMap(double_bad).flatMap(double_bad),
     ]
-    result = Warned.gather(iter(warneds))
+    result: Warned[Tuple[int, ...]] = Warned.gather(iter(warneds))
     assert result.value == (1, 4, 12)
     assert list(result.warnings) == [*bad(2), *bad(3), *bad(6)]
+
+def test_gather_empty() -> None:
+    result: Warned[Tuple[int, ...]] = Warned.gather([])
+    assert result.value == ()
+    assert list(result.warnings) == []
 
 
 ##################################

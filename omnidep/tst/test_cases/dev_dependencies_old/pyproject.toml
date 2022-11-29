@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "omnidep-test-case"
+version = "0.0.1"
+authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
+packages = [{include = "omnidep"}]
+
+[tool.poetry.dependencies]
+python = "^3.7.0"
+
+[tool.poetry.dev-dependencies]
+PYTEST = "*"  # Incorrect capitalisation

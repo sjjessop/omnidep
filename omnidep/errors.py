@@ -83,5 +83,10 @@ class Warned(Generic[T]):
 
         The values are placed into a tuple, and all warnings are concatenated.
         """
+        # It's fine to read the iterable all at once, since zip will anyway.
+        items = tuple(items)
+        if len(items) == 0:
+            # zip doesn't handle the case of no items.
+            return Warned(())
         values, warningses = zip(*map(Warned.as_tuple, items))
         return Warned(values, tuple(itertools.chain.from_iterable(warningses)))

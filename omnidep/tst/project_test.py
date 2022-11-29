@@ -19,6 +19,8 @@ plain_project_files = [
     (test_dir / 'test_cases/unsorted', [Violation.ODEP006]),
     (test_dir / 'test_cases/case_sensitive_sorted', [Violation.ODEP006]),
     (test_dir / 'test_cases/case_insensitive_sorted', []),
+    (test_dir / 'test_cases/dev_dependencies_old', [Violation.ODEP007]),
+    (test_dir / 'test_cases/dev_dependencies_new', [Violation.ODEP007]),
 ]
 
 @pytest.mark.parametrize('dir,expected', plain_project_files)
