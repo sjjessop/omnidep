@@ -334,6 +334,12 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.2
+-----
+
+* Read dev dependencies from the new location used by Poetry 1.2.0+
+* Add Python 3.11 to PyPI classifiers.
+
 0.3.1
 -----
 
