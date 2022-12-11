@@ -63,7 +63,7 @@ omnidep uses your project's poetry configuration to work out:
 * What source files to search for imports, from ``tool.poetry.packages``.
 * What dependencies your project declares, from ``tool.poetry.dependencies``.
 * What dev-dependencies your project declares, from
-  ``tool.poetry.dev-dependencies`` and ``tool.poetry.group.dev.dependences``.
+  ``tool.poetry.dev-dependencies`` and ``tool.poetry.group.dev.dependencies``.
 
 If you have test code that you want omnidep to search for imports, then:
 
