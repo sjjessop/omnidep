@@ -70,7 +70,7 @@ class Config:
     ignore_dev_dependencies_order: bool = False
 
     @classmethod
-    def make(cls, data: Optional[Dict[str, Any]] = None) -> Config:
+    def make(cls, data: Optional[Dict[str, Any]] = None, toml_file: Optional[Path] = None) -> Config:
         data = data or {}
         allowed = {f.name: f for f in fields(cls)}
         args: Dict[str, Any] = {}
@@ -112,4 +112,7 @@ class Config:
                 raise ConfigError(f"Config option {orig_key!r}: expected {expected_type}, got {value!r}")
             converter = convert.get(expected_type, lambda x: x)
             args[key] = converter(value)
+        if 'local_test_paths' in args and toml_file:
+            new_paths = [toml_file.parent / path for path in args['local_test_paths']]
+            args['local_test_paths'] = new_paths
         return Config(**args)

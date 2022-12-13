@@ -51,7 +51,7 @@ def fix_canonical_names(data: Dict[str, Any]) -> Warned[FrozenSet[str]]:
 class Project:
     dependencies: Collection[str]
     dev_dependencies: Collection[str]
-    config: Config = Config.make(None)
+    config: Config
     local_packages: FrozenSet[str] = frozenset()
     extra_paths: Tuple[Path, ...] = ()
 
@@ -67,10 +67,8 @@ class Project:
         )
 
     def check_dev_dependencies(self, paths: Optional[Iterable[Path]]) -> Iterable[Warn]:
-        if paths is None:
-            return
         yield from self.check_modules(
-            paths,
+            itertools.chain(paths or (), self.config.local_test_paths),
             self.dev_dependencies,
             self.local_packages | set(self.config.local_test_packages),
             label='dev-dependencies',
@@ -139,11 +137,11 @@ class Project:
 def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
     if toml_file is None:
         logger.error("pyproject.toml not specified")
-        return Warned(Project((), ()))
+        return Warned(Project((), (), Config.make()))
     with open(toml_file, 'rb') as infile:
         tools = tomli.load(infile)['tool']
     poetry_data = tools['poetry']
-    config = Config.make(tools.get('omnidep'))
+    config = Config.make(tools.get('omnidep'), toml_file)
 
     def process(deps: Dict[str, Any], dev: bool) -> Warned[FrozenSet[str]]:
         if dev:

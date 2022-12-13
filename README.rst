@@ -68,11 +68,13 @@ omnidep uses your project's poetry configuration to work out:
 If you have test code that you want omnidep to search for imports, then:
 
 * If you keep your test code "inside" your project, then list it in
-  ``local-test-paths`` in the ``[omnidep.config]`` section described below.
-* If you keep your test code "outside" your project, then use the ``--tests``
-  command-line option to locate it, otherwise omnidep ignores it. You also need
-  to configure ``local-test-packages`` if some of your test files import other
-  test files, for example if you have shared helper functions.
+  ``local-test-paths`` in the ``[tool.omnidep]`` section described below,
+  otherwise omnidep treats it as regular code.
+* If you keep your test code "outside" your project, then either use the
+  ``--tests`` command-line option to locate it, or list it in
+  ``local-test-paths`` in ``[tool.omnidep]``, otherwise omnidep ignores it. You
+  also need to configure ``local-test-packages`` if some of your test files
+  import other test files, for example if you have shared helper functions.
 
 omnidep is configured using the ``pyproject.toml`` file, and specifically the
 ``[tool.omnidep]`` section. The following config keys are recognised.
