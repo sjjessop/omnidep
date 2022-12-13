@@ -77,10 +77,10 @@ If you have test code that you want omnidep to search for imports, then:
   import other test files, for example if you have shared helper functions.
 
 omnidep is configured using the ``pyproject.toml`` file, and specifically the
-``[tool.omnidep]`` section. The following config keys are recognised.
-Unrecognised keys are rejected and omnidep will not run (so, if you want to
-use a particular key then you should require at least the minimum version of
-omnidep that recognises it).
+``[tool.omnidep]`` section. Unrecognised keys are rejected and omnidep will not
+run (so, if you want to use a particular key then you should require at least
+the minimum version of omnidep that recognises it). The following config keys
+are recognised:
 
 ignore-imports
 ^^^^^^^^^^^^^^
