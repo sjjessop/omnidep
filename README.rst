@@ -340,6 +340,13 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.3
+-----
+
+* Treat local-test-paths config more like --tests option.
+* Non-zero exit code if there are any errors reported.
+* Documentation improvements.
+
 0.3.2
 -----
 
