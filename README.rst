@@ -329,6 +329,10 @@ code, instead of installing it as a dependency.
 To fix, choose one of the following:
 
 * If this is an error, list a suitable dependency.
+* If this occors when your test code is importing other modules also within
+  your test code (for example helper utilities) then you can configure
+  ``local-test-packages = ["X"]`` in your ``[tool.omnidep]`` config, and/or
+  ``local-test-paths`` with the location of the test source.
 * If you know what you're doing, and users of your project will know how to
   supply the code that you're importing, then ignore the import with
   ``ignore-imports = ["X"]`` in your ``[tool.omnidep]`` config.
