@@ -3,7 +3,7 @@
 
 import logging
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, NoReturn, Optional
 
 from .command import CommandLine
 from .errors import ConfigError
@@ -20,7 +20,7 @@ def get_project_file(paths: Iterable[Path]) -> Optional[Path]:
         return tomls.pop()
     return None
 
-def main(args: CommandLine) -> None:
+def main(args: CommandLine) -> int:
     warnings = (
         read_poetry(args.project or get_project_file(args.paths))
         .collect(lambda x: x.check_dependencies(args.paths, exclude=args.tests or ()))
@@ -30,15 +30,17 @@ def main(args: CommandLine) -> None:
     if warnings:
         print('\n'.join(w.report for w in warnings))
         print("See https://github.com/sjjessop/omnidep#error-codes-explained")
+        return 1
     else:
         logger.info("No issues found")
+        return 0
 
-def script_entry_point() -> None:
+def script_entry_point() -> NoReturn:
     args = CommandLine.parse()
     if args.log_level is not None:
         logging.basicConfig(level=args.log_level)
     try:
-        main(args)
+        raise SystemExit(main(args))
     except ConfigError as e:
         raise SystemExit(str(e))
     finally:
