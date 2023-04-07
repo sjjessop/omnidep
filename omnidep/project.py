@@ -119,7 +119,7 @@ class Project:
         if check_unused:
             unused = set(packages) - used - set(self.config.ignore_dependencies)
             if unused:
-                yield V.ODEP005(f'Unused {label} in project file: {unused}')
+                yield V.ODEP005(f'Unused {label} in project file: {sorted(unused)}')
 
     def ignore_import(self, module: str) -> bool:
         return bool(self.config) and module in self.config.ignore_imports
