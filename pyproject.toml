@@ -13,18 +13,18 @@ classifiers = ["Programming Language :: Python :: 3.11"]
 [tool.poetry.dependencies]
 python = ">=3.7.0"
 
-importlib-metadata = ">=1.1.0"  # 1.1.0 required by flake8
+importlib-metadata = ">=1.1.0"
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
 tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
 
 [tool.poetry.dev-dependencies]
 coverage = { version = "*", extras = ["toml"] }
-flake8 = ">=5"
-isort = "*"
+isort = "<5.12"
 mypy = "*"
 pyOpenSSL = "*"  # Used as a test case
 pytest = "*"
 pytest-cov = "*"
+ruff = "0.0.261"
 
 [tool.poetry.scripts]
 omnidep = 'omnidep.main:script_entry_point'
@@ -60,6 +60,12 @@ exclude_lines = [
 
 [tool.pytest.ini_options]
 filterwarnings = ["error"]
+
+
+[tool.ruff]
+select = ["E", "F"]
+ignore = ["E501"]
+target-version = "py37"
 
 
 [build-system]
