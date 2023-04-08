@@ -27,6 +27,9 @@ ruff = "0.0.261"
 [tool.poetry.scripts]
 omnidep = 'omnidep.main:script_entry_point'
 
+[tool.poetry.urls]
+"Changelog" = "https://github.com/sjjessop/omnidep/tree/develop#changelog"
+
 
 [tool.omnidep]
 local-test-paths = ["omnidep/tst/"]
