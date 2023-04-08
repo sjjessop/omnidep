@@ -31,9 +31,9 @@ def main(args: CommandLine) -> int:
         print('\n'.join(w.report for w in warnings))
         print("See https://github.com/sjjessop/omnidep#error-codes-explained")
         return 1
-    else:
-        logger.info("No issues found")
-        return 0
+
+    logger.info("No issues found")
+    return 0
 
 def script_entry_point() -> NoReturn:
     args = CommandLine.parse()
@@ -42,7 +42,7 @@ def script_entry_point() -> NoReturn:
     try:
         raise SystemExit(main(args))
     except ConfigError as e:
-        raise SystemExit(str(e))
+        raise SystemExit(str(e)) from None
     finally:
         print("")
 

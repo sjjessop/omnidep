@@ -35,7 +35,7 @@ def find_source_files(path: Path) -> Iterable[Path]:
 
 def iter_modules(path: Path) -> Iterable[str]:
     for file in find_source_files(path):
-        with open(file, encoding='utf8') as infile:
+        with file.open(encoding='utf8') as infile:
             # print(file)
             tree = ast.parse(infile.read())
             yield from iter_import_names(tree)
@@ -48,7 +48,8 @@ def is_external(module: str) -> bool:
         if module == '__future__':
             return False
         return module not in sys.stdlib_module_names
-    else:
+    else:  # noqa: RET505: disagrees with mypy
+        # Older Python
         from isort import place_module
         return str(place_module(module)) not in ('STDLIB', 'FUTURE')
 

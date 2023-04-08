@@ -68,7 +68,7 @@ class Warned(Generic[T]):
     def warn(self, warning: Warn) -> Warned[T]:
         """Append one warning without changing the value"""
         # This is like the function tell of cats.Writer
-        return Warned(self.value, self.warnings + (warning,))
+        return Warned(self.value, (*self.warnings, warning))
     def warnAll(self, warnings: Iterable[Warn]) -> Warned[T]:
         """Append any number of warnings without changing the value"""
         return Warned(self.value, self.warnings + tuple(warnings))

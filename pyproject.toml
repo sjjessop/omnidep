@@ -44,7 +44,8 @@ known_first_party = ["omnidep"]
 [tool.mypy]
 pretty = true
 strict = true
-allow_untyped_calls = true
+warn_unreachable = true
+disallow_untyped_calls = false
 
 
 [tool.coverage.report]
@@ -61,10 +62,36 @@ filterwarnings = ["error"]
 
 
 [tool.ruff]
-select = ["E", "F"]
-ignore = ["E501"]
+show-source = true
+show-fixes = true
+select = [
+    # Old-school flake8 rules
+    "E", "F",
+    # Helpers for tedious admin
+    "EXE", "INP", "YTT",
+    # Coding style warts
+    "A001", "A002", "C4", "ISC", "PTH", "RET", "RSE",
+    # Potential code improvements
+    "B", "C90", "FBT", "PL", "PT", "RUF", "S", "UP"
+]
+ignore = [
+    "B023",  # The problem is not the function definition, but escaped references.
+    "C401",  # Writing set() to imply deduplication is clearer to me than just punctuation.
+    "E501",  # I have a 4k display.
+    "PLR2004",  # Rejects too many innocuous numbers.
+]
 target-version = "py37"
 
+[tool.ruff.per-file-ignores]
+"omnidep/tst/*" = ["S101"]
+
+[tool.ruff.flake8-pytest-style]
+parametrize-names-type = "csv"
+
+[tool.ruff.pyupgrade]
+# While still supporting Python 3,7, avoids having different style requirements
+# according to whether or not each file imports __future__ annotations.
+keep-runtime-typing = true
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

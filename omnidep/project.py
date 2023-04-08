@@ -138,12 +138,12 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
     if toml_file is None:
         logger.error("pyproject.toml not specified")
         return Warned(Project((), (), Config.make()))
-    with open(toml_file, 'rb') as infile:
+    with toml_file.open('rb') as infile:
         tools = tomli.load(infile)['tool']
     poetry_data = tools['poetry']
     config = Config.make(tools.get('omnidep'), toml_file)
 
-    def process(deps: Dict[str, Any], dev: bool) -> Warned[FrozenSet[str]]:
+    def process(deps: Dict[str, Any], *, dev: bool) -> Warned[FrozenSet[str]]:
         if dev:
             ignore = config.ignore_dev_dependencies_order
             key = 'dev-dependencies'
@@ -156,12 +156,12 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
             .flatMap(fix_canonical_names)
         )
 
-    deps = process(poetry_data['dependencies'], False)
+    deps = process(poetry_data['dependencies'], dev=False)
     # Poetry 1.2.0+ has two different places you can specify dev dependencies
     old_dev_data = poetry_data.get('dev-dependencies', {})
-    old_dev_deps = process(old_dev_data, True)
+    old_dev_deps = process(old_dev_data, dev=True)
     new_dev_data = poetry_data.get('group', {}).get('dev', {}).get('dependencies', {})
-    new_dev_deps = process(new_dev_data, True)
+    new_dev_deps = process(new_dev_data, dev=True)
     dev_deps: Warned[FrozenSet[str]] = (
         Warned.gather([old_dev_deps, new_dev_deps])
         .map(lambda x: frozenset(itertools.chain.from_iterable(x)))

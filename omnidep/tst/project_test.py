@@ -28,14 +28,14 @@ plain_project_files: List[Tuple[Path, Codes, Codes, Codes]] = [
 def codes(warnings: Iterable[Warn]) -> Codes:
     return [warning.code for warning in warnings]
 
-@pytest.mark.parametrize('dir,expected,main,dev', plain_project_files)
-def test_known_project_files(dir: Path, expected: Codes, main: Codes, dev: Codes) -> None:
+@pytest.mark.parametrize('projdir,expected,main,dev', plain_project_files)
+def test_known_project_files(projdir: Path, expected: Codes, main: Codes, dev: Codes) -> None:
     """
     Must generate the expected warnings from known pyproject.toml files
 
     These test cases don't include any source code, just the toml.
     """
-    result = project.read_poetry(dir / 'pyproject.toml')
+    result = project.read_poetry(projdir / 'pyproject.toml')
     assert codes(result.warnings) == expected
     assert codes(result.value.check_dependencies([])) == main
     assert codes(result.value.check_dev_dependencies([])) == dev
