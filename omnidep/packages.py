@@ -54,7 +54,7 @@ def find_packages(module: str, local_packages: FrozenSet[str]) -> Warned[List[st
     # needed provided that it remains available on the path.
     if any((Path(path) / module).is_dir() for path in sys.path):
         return Warned([module]).warn(
-            V.ODEP008(f'Module {module!r} not under package management but found on python path')
+            V.ODEP008(f"Module {module!r} not under package management but found on python path")
         )
     return Warned([])
 

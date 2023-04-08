@@ -26,7 +26,7 @@ def iter_import_names(tree: ast.AST) -> Iterable[str]:
         elif isinstance(node, ast.AST):
             to_process.extend(getattr(node, name) for name in node._fields)
         elif not isinstance(node, basic_types):
-            raise NotImplementedError(f'unhandled {type(node)} {node!r}')
+            raise NotImplementedError(f"unhandled {type(node)} {node!r}")
 
 def find_source_files(path: Path) -> Iterable[Path]:
     if path.is_file() and path.suffix == '.py':

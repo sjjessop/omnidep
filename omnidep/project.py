@@ -82,7 +82,7 @@ class Project:
         *, label: str = 'dependencies', check_unused: bool = True, exclude: Iterable[Path] = (),
     ) -> Iterable[Warn]:
         paths = list(paths)
-        logger.info(f'searching {", ".join(map(str, paths))}')
+        logger.info(f"searching {', '.join(map(str, paths))}")
         def get_files(paths: Iterable[Path]) -> Set[Path]:
             return set(itertools.chain.from_iterable(map(find_source_files, paths)))
         included_paths = get_files(paths) - get_files(exclude)
@@ -90,7 +90,7 @@ class Project:
             module for module in get_external_modules(included_paths)
             if not self.ignore_import(module)
         ]
-        logger.info(f'{label} imported: {modules}')
+        logger.info(f"{label} imported: {modules}")
         used: Set[str] = {'python'}
         for module in modules:
             founds = find_packages(module, local_packages)
@@ -100,7 +100,7 @@ class Project:
                 package = found[0]
                 used.add(package)
                 if package not in local_packages and not self.required(package, packages):
-                    yield V.ODEP001(f'Package {package!r} is imported but not listed in {label}', package)
+                    yield V.ODEP001(f"Package {package!r} is imported but not listed in {label}", package)
             elif len(found) == 0:
                 yield V.ODEP002(f"Module {module!r} is imported but not installed, so I don't know what package is needed", module)
             else:
@@ -119,7 +119,7 @@ class Project:
         if check_unused:
             unused = set(packages) - used - set(self.config.ignore_dependencies)
             if unused:
-                yield V.ODEP005(f'Unused {label} in project file: {sorted(unused)}')
+                yield V.ODEP005(f"Unused {label} in project file: {sorted(unused)}")
 
     def ignore_import(self, module: str) -> bool:
         return bool(self.config) and module in self.config.ignore_imports
