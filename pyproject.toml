@@ -19,6 +19,8 @@ tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
 coverage = { version = "*", extras = ["toml"] }
 isort = "<5.12"
 mypy = "*"
+opentelemetry-api = "*"  # Used as a test case
+opentelemetry-sdk = "*"  # Used as a test case
 pyOpenSSL = "*"  # Used as a test case
 pytest = "*"
 pytest-cov = "*"
@@ -33,6 +35,12 @@ omnidep = 'omnidep.main:script_entry_point'
 
 [tool.omnidep]
 local-test-paths = ["omnidep/tst/"]
+ignore-imports = [
+    # Used in test cases as a missing package/module
+    "no_such_module",
+    # Used in test cases as a namespace package
+    "opentelemetry",
+]
 
 
 [tool.isort]

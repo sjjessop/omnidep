@@ -2,12 +2,13 @@
 name = "omnidep-test-case"
 version = "0.0.1"
 authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
-packages = [{include = "omnidep"}]
+packages = [{include = "parent_child"}]
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
 
-coverage = "*"
+pytest-cov = "*"
 
 [tool.omnidep]
-local-test-paths = ["tests"]
+# Like parent_child_configured, except we have the name wrong here.
+child-packages = {'pytest-cov' = ["coverageX"]}

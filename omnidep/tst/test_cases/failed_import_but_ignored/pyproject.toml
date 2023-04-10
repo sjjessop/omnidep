@@ -2,12 +2,10 @@
 name = "omnidep-test-case"
 version = "0.0.1"
 authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
-packages = [{include = "omnidep"}]
+packages = [{include = "failed_import"}]
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
 
-coverage = "*"
-
 [tool.omnidep]
-local-test-paths = ["tests"]
+ignore-imports = ["no_such_module"]

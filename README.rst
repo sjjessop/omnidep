@@ -44,7 +44,7 @@ repo's CI testing.
 
 .. code-block:: bash
 
-    pip install pyOpenSSL pytest
+    pip install pyOpenSSL opentelemetry-api opentelemetry-sdk pytest
     pytest --pyargs omnidep.tst
 
 Usage

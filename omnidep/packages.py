@@ -21,8 +21,9 @@ punctuation = re.compile(r'[\-._]+')
 def packages_distributions() -> Mapping[str, List[str]]:
     pkg_to_dist = collections.defaultdict(set)
     for dist in metadata.distributions():
+        dist_name = dist.metadata['Name']
         def add_to(pkg: str) -> None:
-            pkg_to_dist[pkg].add(dist.metadata['Name'])
+            pkg_to_dist[pkg].add(dist_name)
         for toplevel in (dist.read_text('top_level.txt') or '').split():
             add_to(toplevel)
         for file in dist.files or ():
@@ -31,6 +32,8 @@ def packages_distributions() -> Mapping[str, List[str]]:
                 add_to(str(file.parent))
             elif str(file.parent) == '.' and file.suffix == '.py':
                 add_to(file.stem)
+            else:
+                add_to(file.parts[0])
     # TODO - make the return immutable, since it's cached
     return {key: sorted(value) for key, value in pkg_to_dist.items()}
 
