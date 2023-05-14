@@ -21,7 +21,7 @@ isort = "<5.12"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
-ruff = "0.0.261"
+ruff = "0.0.267"
 
 [tool.poetry.group.test_case.dependencies]
 # Projects used as dependencies in test cases, that need to be installed so
@@ -93,6 +93,7 @@ ignore = [
     "B023",  # The problem is not the function definition, but escaped references.
     "C401",  # Writing set() to imply deduplication is clearer to me than just punctuation.
     "E501",  # I have a 4k display.
+    "PLR0913",  # Restricts keyword-only arguments too much
     "PLR2004",  # Rejects too many innocuous numbers.
 ]
 target-version = "py37"
