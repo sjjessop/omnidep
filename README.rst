@@ -340,6 +340,11 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.5
+-----
+* No longer depends on importlib-metadata or tomli in Python versions that
+  have equivalent built-in libraries.
+
 0.3.4
 -----
 * Report unused dependencies as a sorted list
