@@ -11,7 +11,7 @@ packages = [{ include = "omnidep" }]
 [tool.poetry.dependencies]
 python = ">=3.7.0"
 
-importlib-metadata = ">=1.1.0"
+importlib-metadata = {version = ">=1.1.0", python = "<3.8" }
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
 tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
 

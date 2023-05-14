@@ -7,7 +7,10 @@ import re
 import sys
 from typing import FrozenSet, List, Mapping, Optional
 
-import importlib_metadata as metadata
+if sys.version_info < (3, 8):
+    import importlib_metadata as metadata
+else:
+    from importlib import metadata
 
 from .errors import Violation as V
 from .errors import Warned
@@ -75,6 +78,6 @@ def get_preferred_name(package: str) -> Optional[str]:
     # importlib_metadata.PackageNotFoundError inherits from FileNotFoundError
     # in old versions (<3) and ImportError more recently.
     with contextlib.suppress(FileNotFoundError, ImportError):
-        name: Optional[str] = metadata.distribution(package).metadata.get('Name')
+        name: Optional[str] = metadata.distribution(package).metadata['Name']
         return name
     return None
