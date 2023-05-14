@@ -348,7 +348,7 @@ Changelog
 0.3.4
 -----
 * Report unused dependencies as a sorted list
-* Allow `python -m omnidep` (https://github.com/sjjessop/omnidep/issues/2)
+* Allow ``python -m omnidep`` (https://github.com/sjjessop/omnidep/issues/2)
 
 0.3.3
 -----
