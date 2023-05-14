@@ -5,12 +5,16 @@ from dataclasses import dataclass
 import itertools
 import logging
 from pathlib import Path
+import sys
 from typing import (
     Any, Collection, Container, Dict, FrozenSet, Iterable, Optional, Set,
     Tuple,
 )
 
-import tomli
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 from .command import Config
 from .errors import Violation as V
@@ -139,7 +143,7 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
         logger.error("pyproject.toml not specified")
         return Warned(Project((), (), Config.make()))
     with toml_file.open('rb') as infile:
-        tools = tomli.load(infile)['tool']
+        tools = tomllib.load(infile)['tool']
     poetry_data = tools['poetry']
     config = Config.make(tools.get('omnidep'), toml_file)
 

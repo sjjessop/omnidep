@@ -13,7 +13,7 @@ python = ">=3.7.0"
 
 importlib-metadata = {version = ">=1.1.0", python = "<3.8" }
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
-tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
+tomli = { version = ">=1.1.0", python = "<3.11" }  # 1.1.0 adds support for binary filehandles
 
 [tool.poetry.group.dev.dependencies]
 coverage = { version = "*", extras = ["toml"] }
@@ -44,6 +44,8 @@ ignore-imports = [
     "no_such_module",
     # Used in test cases as a namespace package
     "opentelemetry",
+    # Omnidep does not understand version-specific imports
+    "tomllib",
 ]
 
 
