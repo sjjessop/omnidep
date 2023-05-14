@@ -15,16 +15,20 @@ importlib-metadata = ">=1.1.0"
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
 tomli = ">=1.1.0"  # 1.1.0 adds support for binary filehandles
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 coverage = { version = "*", extras = ["toml"] }
 isort = "<5.12"
 mypy = "*"
-opentelemetry-api = "*"  # Used as a test case
-opentelemetry-sdk = "*"  # Used as a test case
-pyOpenSSL = "*"  # Used as a test case
 pytest = "*"
 pytest-cov = "*"
 ruff = "0.0.261"
+
+[tool.poetry.group.test_case.dependencies]
+# Projects used as dependencies in test cases, that need to be installed so
+# omnidep can detect them.
+opentelemetry-api = "*"
+opentelemetry-sdk = "*"
+pyOpenSSL = "*"
 
 [tool.poetry.scripts]
 omnidep = 'omnidep.main:script_entry_point'
