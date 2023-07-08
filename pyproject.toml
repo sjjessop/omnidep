@@ -101,7 +101,9 @@ ignore = [
 target-version = "py37"
 
 [tool.ruff.per-file-ignores]
-"omnidep/tst/*" = ["S101"]
+"omnidep/tst/*" = [
+    "S101",  # pytest expects asserts
+]
 
 [tool.ruff.flake8-pytest-style]
 parametrize-names-type = "csv"
