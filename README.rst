@@ -104,7 +104,7 @@ Since: 0.2.0
 
 Causes omnidep to consider a dependency on boto3 to also supply botocore. This
 saves you having to explictly list the child as a dependency of your project.
-You chould only do this when the child is inherant to the parent, not just
+You should only do this when the child is inherent to the parent, not just
 because by chance you pull in a package you need via an indirect dependency.
 The reason is that indirect dependencies can change, and the project that you
 do depend on might not require the same version of the child that your usage
@@ -149,7 +149,7 @@ Example: ``local-test-paths = ["myproject/tests/"]``
 Since: 0.2.0
 
 Causes omnidep to treat all code in ``myproject.tests`` as test code, meaning
-that anything it imports can be provided either by your projects dependencies
+that anything it imports can be provided either by your project's dependencies
 or by its dev-dependencies. Imports from code that is not test code must be
 provided by non-dev dependencies.
 

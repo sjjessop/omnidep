@@ -109,7 +109,7 @@ target-version = "py37"
 parametrize-names-type = "csv"
 
 [tool.ruff.pyupgrade]
-# While still supporting Python 3,7, avoids having different style requirements
+# While still supporting Python 3.7, avoids having different style requirements
 # according to whether or not each file imports __future__ annotations.
 keep-runtime-typing = true
 
