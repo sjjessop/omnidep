@@ -1,6 +1,11 @@
 name: tests
 
-on: push
+on:
+    push:
+    # Run periodically to catch issues with new releases of dependencies
+    schedule:
+        # Friday afternoon, at a time I selected randomly
+        - cron: '35 14 * * 5'
 
 jobs:
   test:
