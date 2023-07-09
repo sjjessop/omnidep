@@ -90,3 +90,15 @@ class Warned(Generic[T]):
             return Warned(())
         values, warningses = zip(*map(Warned.as_tuple, items))
         return Warned(values, tuple(itertools.chain.from_iterable(warningses)))
+
+def safe(value: U) -> Warned[U]:
+    """
+    Convenience constructor: wraps value in Warned without any warnings.
+    """
+    return Warned(value)
+
+def unsafe(value: U, *warnings: Warn) -> Warned[U]:
+    """
+    Convenience constructor: wraps value in Warned with 0 or more warnings.
+    """
+    return Warned(value, warnings)

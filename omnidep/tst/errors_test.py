@@ -3,7 +3,7 @@ from typing import Callable, Iterable, Tuple
 
 import pytest
 
-from omnidep.errors import Violation, Warn, Warned
+from omnidep.errors import Violation, Warn, Warned, safe, unsafe
 
 def assert_odep1(msg: str, warning: Warn) -> None:
     assert warning.code == Violation.ODEP001
@@ -263,3 +263,19 @@ def test_set(x: int, y: int) -> None:
     assert Warned(x, (warning1, warning2)).set(y) == Warned(y, (warning1, warning2))
     for m in (Warned(x), Warned(x, (warning1, warning2))):
         assert m.set(y) == m.flatMap(lambda x: Warned(y))
+
+
+##########################
+# Convenience constructors
+##########################
+
+# Use pre-existing values and functions to generate a mixture of monads with
+# and without warnings included.
+@pytest.mark.parametrize('value', all_values)
+@pytest.mark.parametrize('f', [unit, unit_bad])
+def test_safe(value: int, f: IntFunc) -> None:
+    test_case = Warned(value).flatMap(f)
+    assert safe(value) == Warned(value)
+    one_warning = Violation.ODEP001("")
+    assert unsafe(value, one_warning) == Warned(value, (one_warning,))
+    assert unsafe(value, *test_case.warnings) == Warned(value, test_case.warnings)

@@ -18,7 +18,7 @@ else:
 
 from .command import Config
 from .errors import Violation as V
-from .errors import Warn, Warned
+from .errors import Warn, Warned, safe, unsafe
 from .imports import find_source_files, get_external_modules
 from .packages import canon, find_packages, get_preferred_name
 
@@ -45,10 +45,11 @@ def fix_canonical_names(data: Dict[str, Any]) -> Warned[FrozenSet[str]]:
             # specify either of the two, and warn for any other form.
             preferred_name = get_preferred_name(package_name) or canonical_name
             if package_name != preferred_name:
-                return Warned(canonical_name).warn(
+                return unsafe(
+                    canonical_name,
                     V.ODEP007(f"dependency {package_name!r} is not the preferred name: consider {preferred_name!r}")
                 )
-        return Warned(canonical_name)
+        return safe(canonical_name)
     return Warned.gather(map(check_canon, data)).map(frozenset)
 
 @dataclass(frozen=True)
@@ -141,7 +142,7 @@ class Project:
 def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
     if toml_file is None:
         logger.error("pyproject.toml not specified")
-        return Warned(Project((), (), Config.make()))
+        return safe(Project((), (), Config.make()))
     with toml_file.open('rb') as infile:
         tools = tomllib.load(infile)['tool']
     poetry_data = tools['poetry']
@@ -155,7 +156,7 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
             ignore = config.ignore_dependencies_order
             key = 'dependencies'
         return (
-            Warned(deps)
+            safe(deps)
             .collect(lambda x: () if ignore else check_order(x, key))
             .flatMap(fix_canonical_names)
         )

@@ -13,7 +13,7 @@ else:
     from importlib import metadata
 
 from .errors import Violation as V
-from .errors import Warned
+from .errors import Warned, safe, unsafe
 
 punctuation = re.compile(r'[\-._]+')
 
@@ -47,7 +47,7 @@ def find_packages(module: str, local_packages: FrozenSet[str]) -> Warned[List[st
     answer it, hence we need to apply some guesswork.
     """
     if canon(module) in local_packages:
-        return Warned([module])
+        return safe([module])
     # TODO - Perhaps a more sure way would be to import the module and then
     # look for __file__ in all the packages.files
     #
@@ -55,14 +55,15 @@ def find_packages(module: str, local_packages: FrozenSet[str]) -> Warned[List[st
     # appear here.
     package = packages_distributions().get(module)
     if package is not None:
-        return Warned(list(package))
+        return safe(list(package))
     # Maybe the package is on the path, in which case no package dependency is
     # needed provided that it remains available on the path.
     if any((Path(path) / module).is_dir() for path in sys.path):
-        return Warned([module]).warn(
+        return unsafe(
+            [module],
             V.ODEP008(f"Module {module!r} not under package management but found on python path")
         )
-    return Warned([])
+    return safe([])
 
 def canon(package_name: str) -> str:
     """
