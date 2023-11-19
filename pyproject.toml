@@ -21,7 +21,7 @@ isort = "<5.12"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
-ruff = "0.0.267"
+ruff = "~0.1.6"
 
 [tool.poetry.group.test_case.dependencies]
 # Projects used as dependencies in test cases, that need to be installed so
@@ -97,6 +97,7 @@ ignore = [
     "E501",  # I have a 4k display.
     "PLR0913",  # Restricts keyword-only arguments too much
     "PLR2004",  # Rejects too many innocuous numbers.
+    "PTH201",  # Explicit is better than implicit
 ]
 target-version = "py37"
 
