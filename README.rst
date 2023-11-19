@@ -183,6 +183,10 @@ installs the package ``bs4``). omnidep does its best to find what project your
 desired package comes from, but if it fails, or if you don't have a suitable
 dependency, then this is the result.
 
+If the name you imported is found in a project that's installed (just not
+listed in your dependencies), then X is the name of the project you need,
+rather than the name you imported.
+
 To fix, choose one of the following:
 
 * List the project name in your dependencies. If the package is used from test
