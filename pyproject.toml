@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omnidep"
-version = "0.3.5"
+version = "0.3.6"
 description = "Linter to compare project dependencies against imports in source code"
 readme = "README.rst"
 authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]

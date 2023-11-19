@@ -344,6 +344,13 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.6
+-----
+
+* Add Python 3.12 to the test matrix, and to the trove classifiers.
+* Correction to the documentation for the ODEP001 error message
+  (https://github.com/sjjessop/omnidep/issues/4)
+
 0.3.5
 -----
 * No longer depend on importlib-metadata or tomli in Python versions that
