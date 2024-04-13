@@ -91,7 +91,7 @@ select = [
     # Coding style warts
     "A001", "A002", "C4", "ISC", "PTH", "RET", "RSE",
     # Potential code improvements
-    "B", "C90", "FBT", "PL", "PT", "RUF", "S", "UP"
+    "B", "C90", "FBT", "PGH", "PL", "PT", "RUF", "S", "UP"
 ]
 ignore = [
     "B023",  # The problem is not the function definition, but escaped references.
