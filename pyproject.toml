@@ -9,9 +9,8 @@ homepage = "https://github.com/sjjessop/omnidep"
 packages = [{ include = "omnidep" }]
 
 [tool.poetry.dependencies]
-python = ">=3.7.0"
+python = ">=3.8.1"
 
-importlib-metadata = {version = ">=1.1.0", python = "<3.8" }
 isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
 tomli = { version = ">=1.1.0", python = "<3.11" }  # 1.1.0 adds support for binary filehandles
 
@@ -99,7 +98,7 @@ ignore = [
     "PLR2004",  # Rejects too many innocuous numbers.
     "PTH201",  # Explicit is better than implicit, so allow Path('.')
 ]
-target-version = "py37"
+target-version = "py38"
 
 [tool.ruff.per-file-ignores]
 "omnidep/tst/*" = [
@@ -110,9 +109,10 @@ target-version = "py37"
 parametrize-names-type = "csv"
 
 [tool.ruff.pyupgrade]
-# While still supporting Python 3.7, avoids having different style requirements
+# While still supporting Python 3.8, avoids having different style requirements
 # according to whether or not each file imports __future__ annotations.
 keep-runtime-typing = true
+
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

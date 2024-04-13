@@ -2,15 +2,11 @@
 import collections
 import contextlib
 import functools
+from importlib import metadata
 from pathlib import Path
 import re
 import sys
 from typing import FrozenSet, List, Mapping, Optional
-
-if sys.version_info < (3, 8):
-    import importlib_metadata as metadata
-else:
-    from importlib import metadata
 
 from .errors import Violation as V
 from .errors import Warned, safe, unsafe
@@ -20,7 +16,7 @@ punctuation = re.compile(r'[\-._]+')
 # In Python 3.9+, should use functools.cache instead of lru_cache
 # In Python 3.10+, there is metadata.packages_distributions, but all it checks
 # is top_level.txt, so we still need to search for files as well.
-@functools.lru_cache()
+@functools.lru_cache
 def packages_distributions() -> Mapping[str, List[str]]:
     pkg_to_dist = collections.defaultdict(set)
     for dist in metadata.distributions():

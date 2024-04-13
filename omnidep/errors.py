@@ -88,7 +88,8 @@ class Warned(Generic[T_co]):
         if len(items) == 0:
             # zip doesn't handle the case of no items.
             return Warned(())
-        values, warningses = zip(*map(Warned.as_tuple, items))
+        # map(Warned.as_tuple, items) works here, but mypy says no.
+        values, warningses = zip(*(item.as_tuple() for item in items))
         return Warned(values, tuple(itertools.chain.from_iterable(warningses)))
 
 def safe(value: U) -> Warned[U]:
