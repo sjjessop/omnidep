@@ -318,7 +318,9 @@ list dependencies in case-insensitive alphabetical order within each section
 
 To fix, choose one of the following:
 
-* List your dependencies alphabetically.
+* List your dependencies alphabetically. You could probably automate this with
+  `poetry-plugin-sort <https://github.com/andrei-shabanski/poetry-plugin-sort>`_
+  , but I can't guarantee the projects will always use the same sort order.
 * Set ``ignore-dependencies-order = true`` or
   ``ignore-dev-dependencies-order = true`` in your ``[tool.omnidep]`` config.
 
