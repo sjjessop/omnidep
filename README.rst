@@ -361,6 +361,12 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.7 (2024-04-14)
+------------------
+
+* Allow globs when specifying local paths.
+
+
 0.3.6
 -----
 
