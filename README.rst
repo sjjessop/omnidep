@@ -153,6 +153,23 @@ that anything it imports can be provided either by your project's dependencies
 or by its dev-dependencies. Imports from code that is not test code must be
 provided by non-dev dependencies.
 
+Since 0.3.7
+
+You can use a glob pattern at the end (only) of each path, the same format as
+`Pathlib.glob <https://docs.python.org/3/library/pathlib.html#pathlib.Path.glob>`_
+Specifying ``myproject/tests/**/*.py`` is equivalent to just specifying the
+directory ``myproject/tests/``.
+
+You can give a tighter pattern for your test files, such as
+``myproject/**/*_tests.py``. In that case ``foo_tests.py`` is test code, and
+``foo.py`` is non-test code, wherever they appear under ``myproject``.
+
+You can also search non-recursively, such as ``myproject/tests/*.py``, in
+which case ``myproject/tests/foo/bar.py`` would be considered non-test code.
+
+Regardless of the pattern you specify, only .py files are ever analysed by
+omnidep. For example ``*.txt`` will match nothing.
+
 local-test-packages
 ^^^^^^^^^^^^^^^^^^^
 

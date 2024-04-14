@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "omnidep-test-case"
+version = "0.0.1"
+authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
+packages = [{include = "filter_code"}]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+
+[tool.omnidep]
+local-test-paths = ["filter_code/**/*nothing*.py"]

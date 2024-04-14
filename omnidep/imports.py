@@ -31,7 +31,18 @@ def iter_import_names(tree: ast.AST) -> Iterable[str]:
 def find_source_files(path: Path) -> Iterable[Path]:
     if path.is_file() and path.suffix == '.py':
         return [path]
-    return path.glob('**/*.py')
+    if path.is_dir():
+        return path.rglob('*.py')
+    if '*' not in path.name and path.parent.name != '**':
+        # Doesn't exist, and not a glob, so no matches
+        return []
+    pattern = path.name
+    parent = path.parent
+    if parent.name == '**':
+        matches = parent.parent.rglob(pattern)
+    else:
+        matches = parent.glob(pattern)
+    return [match for match in matches if match.suffix == '.py']
 
 def iter_modules(path: Path) -> Iterable[str]:
     for file in find_source_files(path):

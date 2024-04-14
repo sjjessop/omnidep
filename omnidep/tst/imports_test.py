@@ -13,7 +13,33 @@ def test_find_source_files() -> None:
 
 def test_find_source_files_single() -> None:
     this_file = Path(__file__)
-    assert list(imports.find_source_files(this_file)) == [Path(this_file)]
+    # When full file name is specified, must find only that.
+    assert list(imports.find_source_files(this_file)) == [this_file]
+
+def test_find_source_files_glob_hits() -> None:
+    results = list(imports.find_source_files(test_dir/ '*.py'))
+    # When glob is specified, must find multiple files
+    assert Path(__file__) in results
+    assert len(results) > 1
+    assert all(path.suffix == '.py' for path in results)
+
+def test_find_source_files_glob_misses() -> None:
+    results = list(imports.find_source_files(test_dir/ '*errors*.py'))
+    # When restricted glob is specified, must find just the file that matches
+    assert Path(__file__) not in results
+    assert results == [test_dir / 'errors_test.py']
+
+def test_find_source_files_rglob() -> None:
+    results = list(imports.find_source_files(test_dir.parent/ '*.py'))
+    assert Path(__file__) not in results
+    results = list(imports.find_source_files(test_dir.parent/ '**/*.py'))
+    assert Path(__file__) in results
+
+def test_find_source_files_nonpy() -> None:
+    results = list(test_dir.parent.rglob('*'))
+    assert any(file.suffix != '.py' for file in results)
+    results = list(imports.find_source_files(test_dir.parent / '**/*'))
+    assert all(path.suffix == '.py' for path in results)
 
 def test_is_external() -> None:
     assert not imports.is_external('pathlib')

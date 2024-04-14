@@ -40,6 +40,8 @@ plain_project_files: List[Tuple[Path, Codes, Codes, Codes]] = [
     (test_dir / 'test_cases/namespace_three_declared', [], [], []),
     (test_dir / 'test_cases/parent_child_configured', [], [], []),
     (test_dir / 'test_cases/parent_child_misconfigured', [], [Violation.ODEP001], []),
+    (test_dir / 'test_cases/test_filter_missed', [], [Violation.ODEP001], []),
+    (test_dir / 'test_cases/test_filter_hit', [], [], []),
 ]
 
 def codes(warnings: Iterable[Warn]) -> Codes:
