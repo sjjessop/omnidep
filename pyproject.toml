@@ -16,7 +16,7 @@ tomli = { version = ">=1.1.0", python = "<3.11" }  # 1.1.0 adds support for bina
 
 [tool.poetry.group.dev.dependencies]
 coverage = { version = "*", extras = ["toml"] }
-isort = "<5.12"
+isort = "*"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
