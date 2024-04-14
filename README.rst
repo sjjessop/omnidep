@@ -363,10 +363,17 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.8 (2024-04-14)
+------------------
+
+* Remove support for Python 3.7 and update build tools.
+* Link to poetry-plugin-sort (https://github.com/sjjessop/omnidep/issues/3)
+
+
 0.3.7 (2024-04-14)
 ------------------
 
-* Allow globs when specifying local paths.
+* Allow globs when specifying local paths (https://github.com/sjjessop/omnidep/issues/3)
 * This is the last version to support Python 3.7.
 
 0.3.6
