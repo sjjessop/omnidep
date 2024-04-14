@@ -29,11 +29,11 @@ def iter_import_names(tree: ast.AST) -> Iterable[str]:
             raise NotImplementedError(f"unhandled {type(node)} {node!r}")
 
 def find_source_files(path: Path) -> Iterable[Path]:
-    if path.is_file() and path.suffix == '.py':
-        return [path]
-    if path.is_dir():
-        return path.rglob('*.py')
     if '*' not in path.name and path.parent.name != '**':
+        if path.is_file() and path.suffix == '.py':
+            return [path]
+        if path.is_dir():
+            return path.rglob('*.py')
         # Doesn't exist, and not a glob, so no matches
         return []
     pattern = path.name
