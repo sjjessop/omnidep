@@ -62,6 +62,7 @@ pretty = true
 strict = true
 warn_unreachable = true
 disallow_untyped_calls = false
+overrides = [{module = "opentelemetry", ignore_missing_imports = true}]
 
 
 [tool.coverage.report]
