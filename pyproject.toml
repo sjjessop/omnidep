@@ -20,7 +20,7 @@ isort = "*"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
-ruff = "~0.3.7"
+ruff = "~0.11.5"
 
 [tool.poetry.group.test_case.dependencies]
 # Projects used as dependencies in test cases, that need to be installed so

@@ -59,7 +59,7 @@ def is_external(module: str) -> bool:
         if module == '__future__':
             return False
         return module not in sys.stdlib_module_names
-    else:  # noqa: RET505: disagrees with mypy
+    else:  # noqa: RET505 # disagrees with mypy
         # Older Python
         from isort import place_module
         return str(place_module(module)) not in ('STDLIB', 'FUTURE')
