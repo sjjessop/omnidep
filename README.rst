@@ -363,6 +363,12 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.3.9 (2025-04-13)
+------------------
+
+* Add Python 3.13 to the test matrix, and to the trove classifiers.
+
+
 0.3.8 (2024-04-14)
 ------------------
 
