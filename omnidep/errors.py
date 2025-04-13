@@ -34,11 +34,11 @@ class Warn:
     def report(self) -> str:
         return f"{self.code.name}: {self.msg}"
 
-T_co = TypeVar('T_co', covariant=True)
+T = TypeVar('T')
 U = TypeVar('U')
 
 @dataclass(frozen=True)
-class Warned(Generic[T_co]):
+class Warned(Generic[T]):
     """
     Represents a value, plus zero or more warnings related to the generation of
     that value.
@@ -46,18 +46,18 @@ class Warned(Generic[T_co]):
     This is more-or-less a Writer monad, where the semigroup (over which the
     written data is summed) is fixed as an iterable with concatenation.
     """
-    value: T_co
+    value: T
     # TODO - tuple not efficient. Linked list?
     warnings: Tuple[Warn, ...] = ()
 
-    def flatMap(self, func: Callable[[T_co], Warned[U]]) -> Warned[U]:
+    def flatMap(self, func: Callable[[T], Warned[U]]) -> Warned[U]:
         """Change the value and append any number of warnings"""
         result = func(self.value)
         return Warned(result.value, self.warnings + result.warnings)
-    def map(self, func: Callable[[T_co], U]) -> Warned[U]:
+    def map(self, func: Callable[[T], U]) -> Warned[U]:
         """Change the value without changing the warnings"""
         return self.set(func(self.value))
-    def collect(self, func: Callable[[T_co], Iterable[Warn]]) -> Warned[T_co]:
+    def collect(self, func: Callable[[T], Iterable[Warn]]) -> Warned[T]:
         """Append any number of warnings generated from the value, without changing the value"""
         return Warned(self.value, self.warnings + tuple(func(self.value)))
 
@@ -65,19 +65,19 @@ class Warned(Generic[T_co]):
         """Set a new value without changing the warnings"""
         return Warned(value, self.warnings)
 
-    def warn(self, warning: Warn) -> Warned[T_co]:
+    def warn(self, warning: Warn) -> Warned[T]:
         """Append one warning without changing the value"""
         # This is like the function tell of cats.Writer
         return Warned(self.value, (*self.warnings, warning))
-    def warnAll(self, warnings: Iterable[Warn]) -> Warned[T_co]:
+    def warnAll(self, warnings: Iterable[Warn]) -> Warned[T]:
         """Append any number of warnings without changing the value"""
         return Warned(self.value, self.warnings + tuple(warnings))
 
-    def as_tuple(self) -> Tuple[T_co, Tuple[Warn, ...]]:
+    def as_tuple(self) -> Tuple[T, Tuple[Warn, ...]]:
         """Return (value, warnings)"""
         return self.value, self.warnings
     @staticmethod
-    def gather(items: Iterable[Warned[T_co]]) -> Warned[Tuple[T_co, ...]]:
+    def gather(items: Iterable[Warned[T]]) -> Warned[Tuple[T, ...]]:
         """
         Combine multiple Warned objects in the order specified.
 
