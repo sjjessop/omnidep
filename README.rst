@@ -5,7 +5,7 @@ Omnidep
 A Python linter to compare a project's declared dependencies against the import
 statements in its source code.
 
-.. image:: https://github.com/sjjessop/omnidep/workflows/tests/badge.svg?branch=develop
+.. image:: https://github.com/sjjessop/omnidep/actions/workflows/test.yml/badge.svg?branch=develop
    :alt: Test status
    :target: https://github.com/sjjessop/omnidep/actions?query=workflow%3Atests+branch%3Adevelop
 
