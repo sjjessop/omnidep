@@ -9,8 +9,8 @@ statements in its source code.
    :alt: Test status
    :target: https://github.com/sjjessop/omnidep/actions?query=workflow%3Atests+branch%3Adevelop
 
-.. image:: https://img.shields.io/badge/Tested%20python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue.svg
-   :alt: Tested with Python versions 3.8 3.9 3.10 3.11 3.12
+.. image:: https://img.shields.io/badge/Tested%20python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg
+   :alt: Tested with Python versions 3.8 3.9 3.10 3.11 3.12 3.13
    :target: https://www.python.org/downloads/
 
 .. image:: https://img.shields.io/pypi/pyversions/omnidep
