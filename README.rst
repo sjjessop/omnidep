@@ -9,8 +9,8 @@ statements in its source code.
    :alt: Test status
    :target: https://github.com/sjjessop/omnidep/actions?query=workflow%3Atests+branch%3Adevelop
 
-.. image:: https://img.shields.io/badge/Tested%20python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg
-   :alt: Tested with Python versions 3.8 3.9 3.10 3.11 3.12 3.13
+.. image:: https://img.shields.io/badge/Tested%20python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg
+   :alt: Tested with Python versions 3.8 3.9 3.10 3.11 3.12 3.13 3.14
    :target: https://www.python.org/downloads/
 
 .. image:: https://img.shields.io/pypi/pyversions/omnidep
@@ -362,6 +362,12 @@ To fix, choose one of the following:
 
 Changelog
 =========
+
+0.3.10 (2025-10-12)
+-------------------
+
+* Add Python 3.14 to the test matrix, and to the trove classifiers.
+
 
 0.3.9 (2025-04-13)
 ------------------
