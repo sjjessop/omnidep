@@ -6,6 +6,7 @@ readme = "README.rst"
 authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
 license = "MIT"
 homepage = "https://github.com/sjjessop/omnidep"
+classifiers = ["Programming Language :: Python :: 3.14"]
 packages = [{ include = "omnidep" }]
 
 [tool.poetry.dependencies]
