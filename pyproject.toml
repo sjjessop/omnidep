@@ -25,6 +25,7 @@ ruff = "~0.11.5"
 [tool.poetry.group.test_case.dependencies]
 # Projects used as dependencies in test cases, that need to be installed so
 # omnidep can detect them.
+cffi = [{ version = "<2", python = "<3.9" }, { version = ">=2.0.0", python = ">=3.14" }]  # No binaries
 opentelemetry-api = "*"
 opentelemetry-sdk = "*"
 pyOpenSSL = "*"
