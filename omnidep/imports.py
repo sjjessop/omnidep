@@ -61,7 +61,7 @@ def is_external(module: str) -> bool:
         return module not in sys.stdlib_module_names
     else:  # noqa: RET505 # disagrees with mypy
         # Older Python
-        from isort import place_module
+        from isort import place_module  # noqa: PLC0415 # import in function
         return str(place_module(module)) not in ('STDLIB', 'FUTURE')
 
 def get_external_modules(paths: Iterable[Path]) -> List[str]:
