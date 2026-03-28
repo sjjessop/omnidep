@@ -20,7 +20,7 @@ coverage = { version = "*", extras = ["toml"] }
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
-ruff = "~0.14.0"
+ruff = "~0.15.8"
 
 [tool.poetry.group.test_case.dependencies]
 # Projects used as dependencies in test cases, that need to be installed so

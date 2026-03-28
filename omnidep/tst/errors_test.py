@@ -162,7 +162,7 @@ def test_monad_law_right(value: int) -> None:
     for m in (Warned(value), Warned(value).flatMap(double_bad)):
         # Two ways of expressing the unit. We can't just say Warned because
         # it accepts anything and deduces type, hence has the wrong signature.
-        for f in (unit, lambda x: Warned(x)):
+        for f in (unit, lambda x: Warned(x)):  # noqa: PLW0108
             assert m.flatMap(f) == m
 
 @pytest.mark.parametrize('value', all_values)
