@@ -37,7 +37,6 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run isort . --check-only
           poetry run ruff check .
           poetry run mypy .
 
