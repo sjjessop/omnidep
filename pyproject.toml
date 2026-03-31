@@ -1,40 +1,55 @@
-[tool.poetry]
+[build-system]
+requires = ["uv_build>=0.11.2,<0.12.0"]
+build-backend = "uv_build"
+
+[project]
 name = "omnidep"
 version = "0.3.10"
 description = "Linter to compare project dependencies against imports in source code"
+authors = [{name = "Steve Jessop", email = "68118527+sjjessop@users.noreply.github.com"}]
 readme = "README.rst"
-authors = ["Steve Jessop <68118527+sjjessop@users.noreply.github.com>"]
 license = "MIT"
-homepage = "https://github.com/sjjessop/omnidep"
-classifiers = ["Programming Language :: Python :: 3.14"]
-packages = [{ include = "omnidep" }]
+license-files = ["LICENSE"]
+urls.Homepage = "https://github.com/sjjessop/omnidep"
+urls.Changelog = "https://github.com/sjjessop/omnidep/tree/develop#changelog"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+scripts = {omnidep = "omnidep.main:script_entry_point"}
+requires-python = ">=3.8.1"
+dependencies = [
+    "isort>=5.0.1 ; python_full_version < '3.10'",  # 5.0.1 fixes some issue importing vendored toml
+    "tomli>=1.1.0 ; python_full_version < '3.11'",  # 1.1.0 adds support for binary filehandles
+]
 
-[tool.poetry.dependencies]
-python = ">=3.8.1"
+[dependency-groups]
+dev = [
+    "coverage[toml]>=7.6.1",
+    "mypy>=1.14.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=5.0.0",
+    "ruff~=0.15.8",
+]
+test_case = [
+    "cffi>=1.17.1",
+    "opentelemetry-api>=1.33.1",
+    "opentelemetry-sdk>=1.33.1",
+    "pyOpenSSL>=26.0.0",
+]
 
-isort = { version = ">=5.0.1", python = "<3.10" }  # 5.0.1 fixes some issue importing vendored toml
-tomli = { version = ">=1.1.0", python = "<3.11" }  # 1.1.0 adds support for binary filehandles
+[tool.uv]
+default-groups = "all"
 
-[tool.poetry.group.dev.dependencies]
-coverage = { version = "*", extras = ["toml"] }
-mypy = "*"
-pytest = "*"
-pytest-cov = "*"
-ruff = "~0.15.8"
-
-[tool.poetry.group.test_case.dependencies]
-# Projects used as dependencies in test cases, that need to be installed so
-# omnidep can detect them.
-cffi = [{ version = "<2", python = "<3.9" }, { version = ">=2.0.0", python = ">=3.14" }]  # No binaries
-opentelemetry-api = "*"
-opentelemetry-sdk = "*"
-pyOpenSSL = "*"
-
-[tool.poetry.scripts]
-omnidep = 'omnidep.main:script_entry_point'
-
-[tool.poetry.urls]
-"Changelog" = "https://github.com/sjjessop/omnidep/tree/develop#changelog"
+[tool.uv.build-backend]
+module-name = ["omnidep"]
+module-root = ""
 
 
 [tool.omnidep]
@@ -116,8 +131,3 @@ parametrize-names-type = "csv"
 # While still supporting Python 3.8, avoids having different style requirements
 # according to whether or not each file imports __future__ annotations.
 keep-runtime-typing = true
-
-
-[build-system]
-requires = ["poetry_core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

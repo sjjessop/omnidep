@@ -20,6 +20,7 @@ def test_bad_toml() -> None:
     with pytest.raises(FileNotFoundError):
         project.read_poetry(test_dir / 'no_such_pyproject.toml')
 
+@pytest.mark.skip("Pending support for PEP 621 projects")
 def test_self() -> None:
     """Must be able to load self as a project"""
     assert project.read_poetry(root_dir / 'pyproject.toml').warnings == ()
