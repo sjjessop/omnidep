@@ -23,7 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 scripts = {omnidep = "omnidep.main:script_entry_point"}
-requires-python = ">=3.8.1"
+requires-python = ">=3.8.2"
 dependencies = [
     "isort>=5.0.1 ; python_full_version < '3.10'",  # 5.0.1 fixes some issue importing vendored toml
     "tomli>=1.1.0 ; python_full_version < '3.11'",  # 1.1.0 adds support for binary filehandles
