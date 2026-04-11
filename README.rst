@@ -371,6 +371,12 @@ To fix, choose one of the following:
 Changelog
 =========
 
+0.4.0 (2026-04-11)
+------------------
+
+* Analyse simple PEP 621 projects: not just poetry any more.
+
+
 0.3.10 (2025-10-12)
 -------------------
 
