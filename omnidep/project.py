@@ -5,18 +5,9 @@ from dataclasses import dataclass
 import itertools
 import logging
 from pathlib import Path
+import re
 import sys
-from typing import (
-    Any,
-    Collection,
-    Container,
-    Dict,
-    FrozenSet,
-    Iterable,
-    Optional,
-    Set,
-    Tuple,
-)
+from typing import Collection, Container, FrozenSet, Iterable, Optional, Set, Tuple
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -32,8 +23,8 @@ from .packages import canon, find_packages, get_preferred_name
 logger = logging.getLogger()
 
 
-def check_order(deps: Collection[str], label: str = 'dependencies') -> Iterable[Warn]:
-    deps = list(deps)
+def check_order(deps: Iterable[str], label: str = 'dependencies') -> Iterable[Warn]:
+    deps = tuple(deps)
     if not deps:
         return
     if deps[0] == 'python':
@@ -43,7 +34,7 @@ def check_order(deps: Collection[str], label: str = 'dependencies') -> Iterable[
             yield V.ODEP006(f"{label} are not sorted: {first!r} before {second!r}")
             return
 
-def fix_canonical_names(data: Dict[str, Any]) -> Warned[FrozenSet[str]]:
+def fix_canonical_names(data: Iterable[str]) -> Warned[FrozenSet[str]]:
     def check_canon(package_name: str) -> Warned[str]:
         canonical_name = canon(package_name)
         if package_name != canonical_name:
@@ -146,34 +137,31 @@ class Project:
                 return True
         return False
 
-def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
-    if toml_file is None:
-        logger.error("pyproject.toml not specified")
-        return safe(Project((), (), Config.make()))
+def _process(deps: Iterable[str], config: Config, *, dev: bool) -> Warned[FrozenSet[str]]:
+    if dev:
+        ignore = config.ignore_dev_dependencies_order
+        key = 'dev-dependencies'
+    else:
+        ignore = config.ignore_dependencies_order
+        key = 'dependencies'
+    return (
+        safe(tuple(deps))
+        .collect(lambda x: () if ignore else check_order(x, key))
+        .flatMap(fix_canonical_names)
+    )
+
+def read_poetry(toml_file: Path) -> Warned[Project]:
     with toml_file.open('rb') as infile:
         tools = tomllib.load(infile)['tool']
     poetry_data = tools['poetry']
     config = Config.make(tools.get('omnidep'), toml_file)
 
-    def process(deps: Dict[str, Any], *, dev: bool) -> Warned[FrozenSet[str]]:
-        if dev:
-            ignore = config.ignore_dev_dependencies_order
-            key = 'dev-dependencies'
-        else:
-            ignore = config.ignore_dependencies_order
-            key = 'dependencies'
-        return (
-            safe(deps)
-            .collect(lambda x: () if ignore else check_order(x, key))
-            .flatMap(fix_canonical_names)
-        )
-
-    deps = process(poetry_data['dependencies'], dev=False)
+    deps = _process(poetry_data['dependencies'], config, dev=False)
     # Poetry 1.2.0+ has two different places you can specify dev dependencies
     old_dev_data = poetry_data.get('dev-dependencies', {})
-    old_dev_deps = process(old_dev_data, dev=True)
+    old_dev_deps = _process(old_dev_data, config, dev=True)
     new_dev_data = poetry_data.get('group', {}).get('dev', {}).get('dependencies', {})
-    new_dev_deps = process(new_dev_data, dev=True)
+    new_dev_deps = _process(new_dev_data, config, dev=True)
     dev_deps: Warned[FrozenSet[str]] = (
         Warned.gather([old_dev_deps, new_dev_deps])
         .map(lambda x: frozenset(itertools.chain.from_iterable(x)))
@@ -183,6 +171,45 @@ def read_poetry(toml_file: Optional[Path]) -> Warned[Project]:
     project = Project(
         dependencies=deps.value,
         dev_dependencies=deps.value | dev_deps.value,
+        config=config,
+        local_packages=frozenset(map(canon, pkgs)),
+        extra_paths=tuple(toml_file.parent / pack for pack in pkgs),
+    )
+    return Warned.gather([deps, dev_deps]).set(project)
+
+def pep508_name(dependency: str) -> str:
+    # https://peps.python.org/pep-0508/
+    # identifier_end = letterOrDigit | (('-' | '_' | '.' )* letterOrDigit)
+    # identifier    = letterOrDigit identifier_end*
+    match = re.match(r'^[a-zA-Z0-9][a-zA-Z0-9_\-.]+[a-zA-Z0-9]', dependency)
+    if match is None:
+        return dependency
+    return match.group(0)
+
+def read_pyproject(toml_file: Optional[Path]) -> Warned[Project]:
+    if toml_file is None:
+        logger.error("pyproject.toml not specified")
+        return safe(Project((), (), Config.make()))
+    with toml_file.open('rb') as infile:
+        pyproject = tomllib.load(infile)
+    tools = pyproject.get('tool', {})
+    if 'poetry' in tools:
+        # Slightly inefficient since we've already loaded the file.
+        return read_poetry(toml_file)
+    project_data = pyproject['project']
+    config = Config.make(tools.get('omnidep'), toml_file)
+
+    deps = _process(map(pep508_name, project_data['dependencies']), config, dev=False)
+    groups = pyproject.get('dependency-groups', {}).values()
+    dev_processed = (_process(map(pep508_name, group), config, dev=True) for group in groups)
+    dev_deps: Warned[FrozenSet[str]] = Warned.gather(dev_processed).map(lambda x: frozenset(itertools.chain.from_iterable(x)))
+
+    # TODO - this is wrong, but works for simple projects.
+    # Actually the build system defines how this is configured.
+    pkgs = {project_data["name"]}
+    project = Project(
+        dependencies=deps.value,
+        dev_dependencies=deps.value|dev_deps.value,
         config=config,
         local_packages=frozenset(map(canon, pkgs)),
         extra_paths=tuple(toml_file.parent / pack for pack in pkgs),

@@ -1,0 +1,15 @@
+[project]
+name = "filter_code"
+version = "0.0.1"
+authors = [{name = "Steve Jessop", email = "68118527+sjjessop@users.noreply.github.com"}]
+requires-python = ">=3.8.1"
+dependencies = [
+]
+
+[dependency-groups]
+dev = [
+    "pytest"
+]
+
+[tool.omnidep]
+local-test-paths = ["filter_code/**/*tst*.py"]

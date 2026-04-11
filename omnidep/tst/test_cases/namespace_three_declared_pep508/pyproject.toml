@@ -1,0 +1,10 @@
+[project]
+name = "namespace_code"
+version = "0.0.1"
+authors = [{name = "Steve Jessop", email = "68118527+sjjessop@users.noreply.github.com"}]
+requires-python = ">=3.7.0"
+dependencies = [
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-semantic-conventions",
+]

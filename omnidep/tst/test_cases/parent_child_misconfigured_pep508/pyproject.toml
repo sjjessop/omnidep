@@ -1,0 +1,12 @@
+[project]
+name = "parent_child"
+version = "0.0.1"
+authors = [{name = "Steve Jessop", email = "68118527+sjjessop@users.noreply.github.com"}]
+requires-python = ">=3.7.0"
+dependencies = [
+   "pytest-cov"
+]
+
+[tool.omnidep]
+# Like parent_child_configured, except we have the name wrong here.
+child-packages = {'pytest-cov' = ["coverageX"]}

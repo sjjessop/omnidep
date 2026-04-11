@@ -7,7 +7,7 @@ from typing import Iterable, NoReturn, Optional
 
 from .command import CommandLine
 from .errors import ConfigError
-from .project import read_poetry
+from .project import read_pyproject
 
 logger = logging.getLogger()
 
@@ -22,7 +22,7 @@ def get_project_file(paths: Iterable[Path]) -> Optional[Path]:
 
 def main(args: CommandLine) -> int:
     warnings = (
-        read_poetry(args.project or get_project_file(args.paths))
+        read_pyproject(args.project or get_project_file(args.paths))
         .collect(lambda x: x.check_dependencies(args.paths, exclude=args.tests or ()))
         .collect(lambda x: x.check_dev_dependencies(args.tests))
     ).warnings

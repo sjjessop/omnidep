@@ -27,9 +27,17 @@ Purpose
 Provides warnings when a project imports packages that it doesn't declare a
 dependency on, plus some related linting of the project dependency data.
 
-Currently only poetry projects are supported (configured in pyproject.toml).
+Currently two types of projects are supported:
+
+* poetry projects (configured using ``[tool.poetry]`` in pyproject.toml).
+* PEP 621 projects (configured using ``[project]`` in pyproject.toml), where the
+  source directory has the same name as the project. There is no standard way
+  for pyproject.toml to specify the location of the source: it's up to the
+  build backend to define how this is configured. In future omnidep could read
+  the configuration for the common build backends, but currently it doesn't.
+
 The projects that your project depends on can be packaged using any tools, but
-your project (that omnidep analyses) currently must use poetry.
+your project (that omnidep analyses) must be one of the types listed.
 
 Installation
 ------------

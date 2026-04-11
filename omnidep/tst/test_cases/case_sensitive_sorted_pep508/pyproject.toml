@@ -1,0 +1,14 @@
+[project]
+name = "omnidep-test-case"
+version = "0.0.1"
+authors = [{name = "Steve Jessop", email = "68118527+sjjessop@users.noreply.github.com"}]
+requires-python = ">=3.7.0"
+dependencies = [
+    "pyOpenSSL",
+    "pyclosedssl",  # not a real package
+]
+
+[dependency-groups]
+dev = [
+    "pytest"
+]
